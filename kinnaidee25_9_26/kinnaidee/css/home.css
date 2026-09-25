@@ -1,0 +1,162 @@
+/* ตัวหนังสือไม่ถูกรูปเบียดจนตกบรรทัด */
+.hero-home .hero-text {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* รูปตกแต่งหน้าแรก: ขนาดอิงตามความสูงของ hero */
+.hero-images {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.hero-images img {
+  min-width: 0;
+  max-width: 42%;
+  object-fit: contain;   /* ถ้าที่แคบ รูปจะย่อลงโดยไม่เบี้ยว */
+}
+
+.img-salad {
+  height: 75%;
+}
+
+.img-steak {
+  height: 90%;
+}
+
+.img-pasta {
+  height: 100%;
+  align-self: flex-start;
+  margin-left: auto;     /* ชิดขอบขวาจอเสมอ */
+  max-width: none;       /* สูงเต็ม hero เสมอ */
+  object-position: right top;
+}
+
+
+/* ===== ประเภทอาหาร (หน้าแรก) ===== */
+.category-list {
+  display: flex;
+  gap: 16px;
+}
+
+.category-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 3px solid #EFE3D3;
+  border-radius: 40px;
+  padding: 16px 8px;
+  font-family: "Kanit", sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+.category-card img {
+  width: 64px;
+}
+
+.category-card:hover {
+  background-color: #F6EEE3;
+}
+
+
+/* ===== แถบพื้นที่คลองหก (หน้าแรก) ===== */
+.area-banner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+  background-color: #8FAA64;
+  border: 4px solid #6E8A4B;
+  border-radius: 40px;
+  padding: 16px 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.area-pin {
+  width: 44px;
+}
+
+.area-banner h3 {
+  font-size: 24px;
+}
+
+.area-banner p {
+  margin: 4px 0 0;
+}
+
+.area-map {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  opacity: 0.9;
+}
+
+
+/* ===================================================
+   Responsive (แท็บเล็ต ≤ 1000px / มือถือ ≤ 640px)
+   =================================================== */
+@media (max-width: 1000px) {
+  .category-card {
+    font-size: 15px;
+  }
+  .category-card img {
+    width: 52px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Hero: รูปเรียงแถวอยู่ใต้ตัวหนังสือ */
+  .hero-home .hero-text {
+    white-space: normal;
+  }
+  .hero-images {
+    flex: none;
+    width: 100%;
+    height: 150px;
+    justify-content: space-between;
+    padding-left: 16px;
+  }
+
+  /* ประเภทอาหาร: เลื่อนซ้าย-ขวาได้ */
+  .category-list {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .category-card {
+    flex: 0 0 130px;
+    font-size: 14px;
+    border-radius: 24px;
+    padding: 12px 6px;
+  }
+  .category-card img {
+    width: 44px;
+  }
+
+  /* แถบพื้นที่คลองหก */
+  .area-banner {
+    padding: 14px 20px;
+    border-radius: 24px;
+  }
+  .area-pin {
+    width: 32px;
+  }
+  .area-banner h3 {
+    font-size: 18px;
+  }
+  .area-banner p {
+    font-size: 13px;
+    position: relative;
+  }
+  .area-map {
+    opacity: 0.35;
+  }
+}
