@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ร้านอาหาร | กินไหนดีคลองหก</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/restaurants.css">
+</head>
+<body data-root="../">
+
+  <!-- ===== Navbar ===== -->
+  <header class="navbar">
+    <a href="../index.html" class="logo"><img src="../images/logo.png" alt="กินไหนดีคลองหก"></a>
+    <nav class="menu">
+      <a href="../index.html">หน้าแรก</a>
+      <a href="../restaurant/restaurants.html" class="active">ร้านอาหาร</a>
+      <a href="../about/about.html">เกี่ยวกับเรา</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <!-- ===== Hero + ช่องค้นหา ===== -->
+    <section class="hero hero-restaurants">
+      <div class="hero-text">
+        <h1>ร้านอาหารคลองหก</h1>
+        <p class="big">ค้นหาร้านอาหารหรือเมนูที่คุณกำลังมองหา</p>
+        <form class="search-bar" id="search-form">
+          <img src="../images/icons/search.svg" alt="">
+          <input type="search" id="search-input" placeholder="ค้นหาร้านอาหาร/เมนู">
+          <button type="submit">ค้นหา</button>
+        </form>
+      </div>
+      <img src="../images/decor/fastfood.png" alt="" class="img-fastfood">
+    </section>
+
+    <!-- ===== ตัวกรอง ===== -->
+    <section class="filter-box">
+      <h3>ประเภทอาหาร</h3>
+      <div class="chips" id="filter-category"></div>
+    </section>
+
+    <section class="filter-box">
+      <h3>พื้นที่</h3>
+      <div class="chips" id="filter-area"></div>
+    </section>
+
+    <!-- ===== รายชื่อร้าน ===== -->
+    <section class="section">
+      <div class="section-head">
+        <h2>ร้านอาหาร <small id="restaurant-count"></small></h2>
+        <label class="sort">เรียงตาม
+          <select id="sort">
+            <option value="rating">คะแนนสูงสุด</option>
+            <option value="name">ชื่อร้าน ก-ฮ</option>
+            <option value="random">สุ่มร้าน</option>
+          </select>
+        </label>
+      </div>
+      <div class="restaurant-list" id="restaurant-list"></div>
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+  </main>
+
+  <!-- ===== Footer ===== -->
+  <footer>@ 2026 กินไหนดีคลองหก</footer>
+
+  <script src="../js/data.js"></script>
+  <script src="../js/script.js"></script>
+</body>
+</html>
