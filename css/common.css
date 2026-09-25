@@ -1,0 +1,384 @@
+/* ===== ทั้งหน้า ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Sarabun", sans-serif;
+  background-color: #FDFBF6;
+  color: #3B2A22;
+  overflow-x: hidden;          /* กันแถบเลื่อนแนวนอนตอน hero ยืดเต็มจอ */
+}
+
+h1, h2, h3 {
+  font-family: "Kanit", sans-serif;
+  font-weight: 500;
+  margin: 0;
+}
+
+a {
+  color: #3B2A22;
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.center {
+  text-align: center;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #D96A33;
+  color: white;
+  font-family: "Kanit", sans-serif;
+  font-size: 18px;
+  padding: 10px 28px;
+  border-radius: 30px;
+}
+
+.btn:hover {
+  background-color: #C0582A;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* เมนูอยู่กึ่งกลาง */
+  background-color: #FDFBF6;
+  padding: 8px 20px 0;
+  border-bottom: 1px solid #EFE3D3;
+}
+
+.logo {
+  position: absolute;          /* โลโก้ชิดซ้าย ไม่ดันเมนู */
+  left: 8%;
+  top: 6px;
+}
+
+.logo img {
+  height: 64px;
+}
+
+.menu {
+  display: flex;
+  gap: 60px;
+}
+
+.menu a {
+  font-family: "Kanit", sans-serif;
+  font-size: 20px;
+  padding: 14px 4px;
+  border-bottom: 4px solid transparent;
+}
+
+.menu a:hover,
+.menu a.active {
+  color: #D96A33;
+  border-bottom-color: #D96A33;
+}
+
+/* ===== Hero (ส่วนหัวของแต่ละหน้า) ===== */
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #F6EEE3;
+  height: clamp(200px, 14.5vw, 300px); /* สูงตามความกว้างจอ: จอเล็ก 200px, จอใหญ่ไม่เกิน 300px */
+  overflow: hidden;
+  /* ยืดเต็มความกว้างจอ ถึงจะอยู่ใน .container */
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.hero-text {
+  /* ตัวหนังสือยังตรงแนวกับเนื้อหาด้านล่าง ไม่ชิดขอบจอ */
+  padding: 20px 50px 20px max(50px, calc(50% - 550px));
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  color: #1B1511;
+  font-size: clamp(34px, 3vw, 57px);    /* ตัวหนังสือโตตามจอ */
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.hero h1 .light {
+  font-weight: 400;
+}
+
+.hero h2 {
+  font-size: clamp(18px, 1.3vw, 24px);
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.hero p {
+  font-size: clamp(15px, 0.95vw, 17px);
+  margin: 4px 0 14px;
+}
+
+.hero .btn {
+  font-size: 15px;
+  padding: 8px 20px;
+}
+
+
+/* ===== หัวข้อแต่ละส่วน ===== */
+.section {
+  padding: 20px 20px 10px;
+}
+
+.section h2 {
+  font-size: 30px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 20px;
+}
+
+.section-head small {
+  font-family: "Sarabun", sans-serif;
+  font-size: 18px;
+  color: #8A7466;
+  margin-left: 8px;
+}
+
+.see-all {
+  color: #D96A33;
+  font-family: "Kanit", sans-serif;
+  font-size: 20px;
+}
+
+
+/* ===== การ์ดร้าน ===== */
+.restaurant-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.restaurant-card {
+  /* ให้ทุกการ์ดในแถวเดียวกันใช้บรรทัดร่วมกัน
+     ชื่อร้าน / รูป / คะแนน / ที่อยู่ / แท็ก / เวลา จะอยู่ระดับเดียวกันทุกการ์ด */
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 7;            /* 7 ส่วน: ไอคอน, ชื่อ, รูป, คะแนน, ที่อยู่, แท็ก, เวลา */
+  row-gap: 0;
+  align-content: start;
+  background-color: #F6EEE3;
+  border-radius: 6px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.restaurant-card:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  height: 26px;          /* สูงเท่ากันทุกไอคอน ความกว้างตามรูป */
+  width: auto;
+  align-self: start;
+}
+
+.restaurant-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 6px 0 8px;
+}
+
+.card-img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.rating {
+  font-size: 14px;
+  margin: 8px 0 2px;
+}
+
+.star {
+  color: #F2B233;
+}
+
+.reviews {
+  color: #8A7466;
+}
+
+.no-data {
+  color: #8A7466;
+}
+
+.address {
+  font-size: 13px;
+  margin: 2px 0 6px;
+}
+
+.address img {
+  width: 10px;
+  vertical-align: middle;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.tag {
+  background-color: #A88B78;
+  color: white;
+  font-size: 11px;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: end;
+  font-size: 13px;
+}
+
+.hours img {
+  width: 14px;
+  vertical-align: middle;
+}
+
+.more {
+  font-weight: 500;
+}
+
+
+/* ===== Footer ===== */
+footer {
+  background-color: #C9D0D9;
+  color: #6B6B6B;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 30px;
+  font-size: 13px;
+}
+
+
+/* ===================================================
+   Responsive: ปรับตามขนาดจอ
+   แท็บเล็ต  ≤ 1000px
+   มือถือ    ≤ 640px
+   มือถือเล็ก ≤ 360px
+   =================================================== */
+
+/* ----- แท็บเล็ต ----- */
+@media (max-width: 1000px) {
+  .logo {
+    left: 16px;
+  }
+  .menu {
+    gap: 32px;
+  }
+  .section {
+    padding: 20px 16px 10px;
+  }
+  .restaurant-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ----- มือถือ ----- */
+@media (max-width: 640px) {
+  /* Navbar: โลโก้ซ้าย เมนูขวา แถวเดียว */
+  .navbar {
+    justify-content: space-between;
+    padding: 4px 12px 0;
+  }
+  .logo {
+    position: static;
+  }
+  .logo img {
+    height: 44px;
+  }
+  .menu {
+    gap: 14px;
+  }
+  .menu a {
+    font-size: 16px;
+    padding: 12px 2px;
+  }
+
+  /* Hero: ตัวหนังสืออยู่บน รูปอยู่ล่าง */
+  .hero {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-text {
+    padding: 24px 16px 12px;
+  }
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  /* หัวข้อ */
+  .section h2 {
+    font-size: 22px;
+  }
+  .see-all {
+    font-size: 15px;
+  }
+
+  /* การ์ดร้าน 2 คอลัมน์ */
+  .restaurant-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .restaurant-card {
+    padding: 10px;
+  }
+  .restaurant-card h3 {
+    font-size: 14px;
+  }
+  .card-img {
+    height: 110px;
+  }
+  .card-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  footer {
+    font-size: 12px;
+    padding: 12px 0;
+  }
+}
+
+/* ----- มือถือเล็ก: การ์ดร้าน 1 คอลัมน์ ----- */
+@media (max-width: 360px) {
+  .menu a {
+    font-size: 14px;
+  }
+  .restaurant-list {
+    grid-template-columns: 1fr;
+  }
+  .card-img {
+    height: 160px;
+  }
+}
