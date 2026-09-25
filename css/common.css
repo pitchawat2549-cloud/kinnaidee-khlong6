@@ -1,4 +1,3 @@
-/* ===== ทั้งหน้า ===== */
 * {
   box-sizing: border-box;
 }
@@ -175,7 +174,7 @@ a {
      ชื่อร้าน / รูป / คะแนน / ที่อยู่ / แท็ก / เวลา จะอยู่ระดับเดียวกันทุกการ์ด */
   display: grid;
   grid-template-rows: subgrid;
-  grid-row: span 7;            /* 7 ส่วน: ไอคอน, ชื่อ, รูป, คะแนน, ที่อยู่, แท็ก, เวลา */
+  grid-row: span 7;            /* 7 ส่วน: ไอคอน, ชื่อ, รูป, ราคา, ที่อยู่, แท็ก, เวลา */
   row-gap: 0;
   align-content: start;
   background-color: #F6EEE3;
@@ -207,21 +206,12 @@ a {
   border-radius: 10px;
 }
 
-.rating {
+/* ราคาเฉลี่ยบนการ์ด (แทนดาวรีวิว) */
+.price {
   font-size: 14px;
+  font-weight: 600;
+  color: #D96A33;
   margin: 8px 0 2px;
-}
-
-.star {
-  color: #F2B233;
-}
-
-.reviews {
-  color: #8A7466;
-}
-
-.no-data {
-  color: #8A7466;
 }
 
 .address {

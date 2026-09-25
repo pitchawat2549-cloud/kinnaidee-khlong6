@@ -14,13 +14,33 @@ function getParam(name) {
   return new URLSearchParams(window.location.search).get(name);
 }
 
+// ข้อความทั้งหมดของร้านที่ใช้ค้นหา: ชื่อร้าน + แท็ก + ชื่อเมนู + ประเภทอาหาร
+function searchText(r) {
+  const menus = (r.menu || []).flatMap(g => g.items.map(item => item[0]));
+  return [r.name, ...r.tags, ...menus, getCategory(r.category).name].join(" ").toLowerCase();
+}
+
+// ข้อความราคาเฉลี่ย
+function priceText(r) {
+  return r.price ? r.price + " บาท" : "ไม่ระบุ";
+}
+
+// สุ่มสลับลำดับ (Fisher–Yates) ให้ทุกร้านมีโอกาสขึ้นก่อนเท่ากัน
+function shuffle(list) {
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 // ---------- การ์ดร้าน (ใช้ทั้งหน้าแรกและหน้าร้านอาหาร) ----------
 function restaurantCard(restaurant) {
   const cat = getCategory(restaurant.category);
 
-  const rating = restaurant.rating
-    ? `<p class="rating">${restaurant.rating} <span class="star">★</span> <span class="reviews">(${restaurant.reviews} รีวิว)</span></p>`
-    : `<p class="rating no-data">ยังไม่มีคะแนน</p>`;
+  // ราคาเฉลี่ย (ไม่ใช้ดาวรีวิว)
+  const price = `<p class="price">ราคาเฉลี่ย ${priceText(restaurant)}</p>`;
 
   const tags = restaurant.tags.map(t => `<span class="tag">${t}</span>`).join("");
 
@@ -29,7 +49,7 @@ function restaurantCard(restaurant) {
       <img class="card-icon" src="${ROOT}${cat.icon}" alt="">
       <h3>${restaurant.name}</h3>
       <img class="card-img" src="${ROOT}${restaurant.images[0]}" alt="${restaurant.name}">
-      ${rating}
+      ${price}
       <p class="address"><img src="${ROOT}images/icons/pin.svg" alt=""> ${restaurant.address}</p>
       <div class="tags">${tags}</div>
       <div class="card-bottom">
@@ -51,10 +71,8 @@ function renderHome() {
       <span>${c.name}</span>
     </a>`).join("");
 
-  // ร้านแนะนำ = 5 ร้านที่คะแนนสูงสุด
-  const top = RESTAURANTS.filter(s => s.rating)
-                   .sort((a, b) => b.rating - a.rating)
-                   .slice(0, 5);
+  // ร้านแนะนำ = สุ่ม 5 ร้านใหม่ทุกครั้งที่เข้าเว็บ (Random Shuffle)
+  const top = shuffle(RESTAURANTS).slice(0, 5);
   document.getElementById("home-restaurants").innerHTML = top.map(restaurantCard).join("");
 }
 
@@ -66,9 +84,12 @@ let state = {
   cat: getParam("cat") || "all",
   area: "all",
   search: "",
-  sort: "rating",
+  sort: "random",     // เริ่มต้นแบบสุ่ม ทุกร้านได้โปรโมตเท่ากัน
   page: 1
 };
+
+// ลำดับสุ่มจะสุ่มครั้งเดียวตอนเปิดหน้า (กดเปลี่ยนหน้า 1, 2 ร้านไม่ซ้ำกัน)
+let randomOrder = shuffle(RESTAURANTS);
 
 function renderRestaurantsPage() {
   // ปุ่มประเภทอาหาร
@@ -85,16 +106,15 @@ function renderRestaurantsPage() {
 
   // กรองร้าน
   const word = state.search.trim().toLowerCase();
-  let list = RESTAURANTS.filter(s =>
+  const base = state.sort === "random" ? randomOrder : RESTAURANTS.slice();
+  let list = base.filter(s =>
     (state.cat === "all" || s.category === state.cat) &&
     (state.area === "all" || s.area === state.area) &&
-    (word === "" || s.name.toLowerCase().includes(word) || s.tags.join(" ").toLowerCase().includes(word))
+    (word === "" || searchText(s).includes(word))
   );
 
   // เรียงลำดับ
-  if (state.sort === "rating") list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-  if (state.sort === "name")   list.sort((a, b) => a.name.localeCompare(b.name, "th"));
-  if (state.sort === "random") list.sort(() => Math.random() - 0.5);
+  if (state.sort === "name") list.sort((a, b) => a.name.localeCompare(b.name, "th"));
 
   document.getElementById("restaurant-count").textContent = `พบทั้งหมด ${list.length} ร้าน`;
 
@@ -141,6 +161,7 @@ function setupRestaurantsPage() {
   // เรียงตาม
   document.getElementById("sort").addEventListener("change", e => {
     state.sort = e.target.value;
+    if (state.sort === "random") randomOrder = shuffle(RESTAURANTS);   // เลือก "สุ่มร้าน" อีกครั้ง = สุ่มใหม่
     state.page = 1;
     renderRestaurantsPage();
   });
@@ -156,7 +177,7 @@ function renderDetail() {
   document.getElementById("detail-img").src = ROOT + restaurant.images[0];
   document.getElementById("detail-img").alt = restaurant.name;
   document.getElementById("detail-name").textContent = restaurant.name;
-  document.getElementById("detail-rating").textContent = restaurant.rating ? `${restaurant.rating}/5.0` : "ยังไม่มีคะแนน";
+  document.getElementById("detail-price").textContent = "ราคาเฉลี่ย " + priceText(restaurant);
   document.getElementById("detail-category").textContent = getCategory(restaurant.category).name;
   document.getElementById("detail-address").textContent = restaurant.address;
   document.getElementById("detail-phone").textContent = restaurant.phone ? "เบอร์โทร " + restaurant.phone : "เบอร์โทร ไม่ระบุ";

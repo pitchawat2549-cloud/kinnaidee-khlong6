@@ -1,10 +1,10 @@
-// ประเภทอาหาร 5 ประเภท
+// หมวดหมู่อาหาร 5 หมวด (ตามสไลด์หลัก ตัดของทอดออก รวมไว้ในขนม)
 const CATEGORIES = [
-  { id: "rice",   name: "อาหารจานเดียว&ตามสั่ง", icon: "images/icons/rice.svg" },
-  { id: "noodle", name: "ก๋วยเตี๋ยว&อาหารเส้น",  icon: "images/icons/noodle.svg" },
-  { id: "snack",  name: "ของกินเล่น",           icon: "images/icons/snack.svg" },
-  { id: "cafe",   name: "คาเฟ่&เครื่องดื่ม",      icon: "images/icons/cafe.svg" },
-  { id: "shabu",  name: "หมูกะทะ&ชาบู",          icon: "images/icons/shabu.svg" }
+  { id: "rice",    name: "อาหารจานเดียว", icon: "images/icons/rice.svg" },
+  { id: "noodle",  name: "เมนูเส้น",       icon: "images/icons/noodle.svg" },
+  { id: "dessert", name: "ขนม",           icon: "images/icons/snack.svg" },   // รวมของทอด/ของกินเล่นไว้ในหมวดนี้
+  { id: "fruit",   name: "ผลไม้",          icon: "images/icons/fruit.svg" },
+  { id: "drink",   name: "เครื่องดื่ม",      icon: "images/icons/cafe.svg" }
 ];
 
 // พื้นที่ 3 โซน
@@ -15,18 +15,20 @@ const AREAS = [
 ];
 
 // รายชื่อร้าน
-// - rating / reviews / hours / phone / tags ที่ยังไม่มีข้อมูล ให้เว้นว่าง ("" หรือ null หรือ [])
+// - price = ราคาเฉลี่ย (บาท) เช่น "50 - 90"
+// - price / hours / phone / tags ที่ยังไม่มีข้อมูล ให้เว้นว่าง ("" หรือ [])
+// - ไม่ใช้ดาวรีวิว (ตามสไลด์: ตัดดาวรีวิวออก)
 // - area ที่ยังไม่แน่ใจ ให้เว้นว่าง "" ไว้ก่อน (ร้านจะโชว์เฉพาะตอนเลือก "ทั้งหมด")
 // - menu (ไม่ใส่ก็ได้) = กลุ่มเมนู แต่ละกลุ่มมี title และ items: [ชื่อเมนู, ราคา]
 const RESTAURANTS = [
   {
     id: "kaitod-baimai",
     name: "ไก่ทอดใบไม้ สูตรปักษ์ใต้ คลอง6",
-    category: "rice",
+    category: "dessert",
     area: "rmutt",
-    rating: 4.5, reviews: 236,
     address: "ตรงข้ามเอสโตว์ หน้า ม.ราชมงคลธัญบุรี ถ.พรธิสาร 3",
     hours: "11:30 - 22:00",
+    price: "",
     phone: "",
     tags: ["ไก่ทอด", "สูตรปักษ์ใต้", "หมักสมุนไพร"],
     map: "https://maps.app.goo.gl/xrEfb6QPAbHDkW3z9",
@@ -37,9 +39,9 @@ const RESTAURANTS = [
     name: "ข้าวมันไก่ลุงเปี๊ยกน้ำข้น",
     category: "rice",
     area: "",
-    rating: 4.2, reviews: 180,
     address: "ซอยพรธิสาร 3 คลองหก คลองหลวง ปทุมธานี",
     hours: "10:00 - 04:00",
+    price: "",
     phone: "",
     tags: ["ไก่ตอนเนื้อล้วน", "ข้าวมันนุ่มหอม"],
     map: "https://maps.app.goo.gl/5DRATxCEc79dX5ay8",
@@ -50,9 +52,9 @@ const RESTAURANTS = [
     name: "กะเพราแม่",
     category: "rice",
     area: "",
-    rating: 4.8, reviews: 150,
     address: "หน้าหอ ลากูนแมนชั่น คลองหก คลองหลวง ปทุมธานี",
     hours: "12:00 - 22:00",
+    price: "50 - 90",
     phone: "0614844971",
     tags: ["เมนูยอดนิยม", "ข้าวราดกะเพราไข่ดาว"],
     map: "https://maps.app.goo.gl/Tg3NaXvmZK7YWzgq8",
@@ -91,9 +93,9 @@ const RESTAURANTS = [
     name: "ก๋วยเตี๋ยวเรืออยุธยา",
     category: "noodle",
     area: "",
-    rating: 4.6, reviews: 100,
     address: "อยู่ตรงข้ามกับซอยอีสเทิร์น คลองหก คลองหลวง ปทุมธานี",
     hours: "10:30 - 21:00",
+    price: "",
     phone: "",
     tags: ["น้ำซุปเข้มข้นสูตรดั้งเดิม"],
     map: "https://maps.app.goo.gl/NHe3NJFkSAvh4fxFA",
@@ -102,11 +104,11 @@ const RESTAURANTS = [
   {
     id: "crepe-krob-paktaek",
     name: "เครปกรอบปากแตก",
-    category: "snack",
+    category: "dessert",
     area: "canal",
-    rating: 4.8, reviews: 60,
     address: "ซอยตะวันออก 6 ริมคลอง คลองหก คลองหลวง ปทุมธานี",
     hours: "14:00 - 22:00",
+    price: "",
     phone: "",
     tags: ["เครปไส้ทะลัก", "แป้งกรอบ"],
     map: "https://maps.app.goo.gl/6v1HqUktG1xKeegQ6",
@@ -117,9 +119,9 @@ const RESTAURANTS = [
     name: "ครัวคุณยาย",
     category: "rice",
     area: "",
-    rating: null, reviews: null,
     address: "ซอยพรธิสาร 3 คลองหก คลองหลวง ปทุมธานี",
     hours: "",
+    price: "",
     phone: "",
     tags: [],
     map: "https://maps.app.goo.gl/kpUe4S2VJjVy6Nre9",
@@ -130,9 +132,9 @@ const RESTAURANTS = [
     name: "โจ๊กสยาม",
     category: "rice",
     area: "canal",
-    rating: null, reviews: null,
     address: "ตรงข้ามสะพานสูง ฝั่งเลียบคลอง คลองหก คลองหลวง ปทุมธานี",
     hours: "",
+    price: "",
     phone: "",
     tags: [],
     map: "https://maps.app.goo.gl/bM1jYnSp31JqwAUo7",
@@ -141,11 +143,11 @@ const RESTAURANTS = [
   {
     id: "chuang-chuang-wei-mala",
     name: "ชวง ชวง เว่ย หม่าล่าเสฉวน",
-    category: "snack",
+    category: "dessert",
     area: "",
-    rating: null, reviews: null,
     address: "ซอยอีสเทิร์น คลองหก คลองหลวง ปทุมธานี",
     hours: "",
+    price: "",
     phone: "",
     tags: [],
     map: "https://maps.app.goo.gl/GEU9oJGm31Fv7QZE8",
@@ -154,11 +156,11 @@ const RESTAURANTS = [
   {
     id: "kwanjai-mala",
     name: "ขวัญใจ หม่าล่า",
-    category: "snack",
+    category: "dessert",
     area: "canal",
-    rating: null, reviews: null,
     address: "เลียบคลอง คลองหก คลองหลวง ปทุมธานี",
     hours: "",
+    price: "",
     phone: "",
     tags: [],
     map: "https://maps.app.goo.gl/VzH64uX3DPk2ZP41A",
