@@ -1,0 +1,116 @@
+/* พื้นหลัง hero: ไล่สีส้ม → เหลือง */
+.hero-home {
+  background: linear-gradient(90deg, #F2955B 0%, #F6B862 50%, #F9D66C 100%);
+}
+
+/* ตัวหนังสือไม่ถูกรูปเบียดจนตกบรรทัด */
+.hero-home .hero-text {
+  flex: none;
+  white-space: nowrap;
+}
+
+/* รูปตกแต่งหน้าแรก: ขนาดอิงตามความสูงของ hero */
+.hero-images {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;   /* รูปทั้ง 3 รวมกลุ่มชิดขวา */
+  gap: 2vw;                    /* ระยะห่างระหว่างรูป */
+}
+
+.hero-images img {
+  min-width: 0;
+  max-width: 42%;
+  object-fit: contain;   /* ถ้าที่แคบ รูปจะย่อลงโดยไม่เบี้ยว */
+}
+
+.img-salad {
+  height: 75%;
+}
+
+.img-steak {
+  height: 90%;
+}
+
+.img-pasta {
+  height: 100%;
+  align-self: flex-start;
+  max-width: none;       /* สูงเต็ม hero เสมอ */
+  object-position: right top;
+}
+
+
+/* ===== ประเภทอาหาร (หน้าแรก) ===== */
+.category-list {
+  display: flex;
+  gap: 16px;
+}
+
+.category-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: 3px solid #EFE3D3;
+  border-radius: 40px;
+  padding: 16px 8px;
+  font-family: "Kanit", sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+.category-card img {
+  height: 56px;          /* สูงเท่ากันทุกไอคอน ความกว้างตามรูป */
+  width: auto;
+  max-width: 90%;
+  object-fit: contain;
+}
+
+.category-card:hover {
+  background-color: #F6EEE3;
+}
+
+
+/* ===================================================
+   Responsive (แท็บเล็ต ≤ 1000px / มือถือ ≤ 640px)
+   =================================================== */
+@media (max-width: 1000px) {
+  .category-card {
+    font-size: 15px;
+  }
+  .category-card img {
+    height: 46px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Hero: รูปเรียงแถวอยู่ใต้ตัวหนังสือ */
+  .hero-home .hero-text {
+    white-space: normal;
+  }
+  .hero-images {
+    flex: none;
+    width: 100%;
+    height: 150px;
+    justify-content: space-between;
+    padding-left: 16px;
+  }
+
+  /* ประเภทอาหาร: เลื่อนซ้าย-ขวาได้ */
+  .category-list {
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+  .category-card {
+    flex: 0 0 130px;
+    font-size: 14px;
+    border-radius: 24px;
+    padding: 12px 6px;
+  }
+  .category-card img {
+    height: 40px;
+  }
+}
