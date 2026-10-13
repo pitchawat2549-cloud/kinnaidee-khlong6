@@ -825,20 +825,6 @@ button { font: inherit; color: inherit; }
    เพิ่ม 13 ต.ค. : ลวดลาย / รูปการ์ด / ร้านใกล้ฉัน / นับเวลาปิด
    =================================================== */
 
-/* ขอบล่างของแบนเนอร์เป็นลอนคลื่น */
-.hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 14px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='14' viewBox='0 0 28 14'%3E%3Cpath d='M0 14a14 14 0 0 1 28 0z' fill='%23FDFBF6'/%3E%3C/svg%3E") repeat-x;
-  background-size: 28px 14px;
-  z-index: 3;
-  pointer-events: none;
-}
-
 /* เส้นหยักใต้หัวข้อ */
 .section h2::after,
 .panel h2::after {
@@ -947,7 +933,6 @@ button { font: inherit; color: inherit; }
 .addr-area { font-size: 14px; color: var(--muted); }
 
 @media (max-width: 640px) {
-  .hero-text { padding-bottom: 30px; }          /* เว้นที่ให้ขอบลอนคลื่น */
   .near-link { margin: 4px 0 0; }
 }
 @media (max-width: 360px) {
