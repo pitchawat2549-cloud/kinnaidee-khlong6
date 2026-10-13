@@ -190,3 +190,14 @@
 .near-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
 .near-btn.active img { filter: brightness(0) invert(1); }
 .near-btn:disabled { opacity: 0.7; cursor: wait; }
+.near-group { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.near-group select {
+  width: auto;
+  padding: 5px 10px;
+  font: 15px "Sarabun", sans-serif;
+  border: 2px solid var(--orange);
+  border-radius: 10px;
+  background: white;
+  color: var(--text);
+}
+.near-group select:focus { outline: none; box-shadow: 0 0 0 3px rgba(217, 106, 51, 0.2); }

@@ -45,9 +45,15 @@
         <div class="chips" id="filter-area"></div>
       </div>
       <div class="filter-row filter-extra">
-        <button type="button" class="near-btn" id="near-btn" aria-pressed="false">
-          <img src="../images/icons/pin.svg" alt=""> ร้านใกล้ฉัน
-        </button>
+        <div class="near-group">
+          <button type="button" class="near-btn" id="near-btn" aria-pressed="false"><img src="../images/icons/pin.svg" alt=""><span>ร้านใกล้ฉัน</span></button>
+          <select id="near-radius" aria-label="ระยะจากตำแหน่งของฉัน" hidden>
+            <option value="500">ภายใน 500 ม.</option>
+            <option value="1000">ภายใน 1 กม.</option>
+            <option value="2000">ภายใน 2 กม.</option>
+            <option value="0">ทุกระยะ (โชว์ระยะทาง)</option>
+          </select>
+        </div>
         <label class="check"><input type="checkbox" id="f-open"> เปิดอยู่ตอนนี้</label>
         <label class="field field-inline">งบต่อมื้อ
           <select id="f-budget">

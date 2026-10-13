@@ -92,7 +92,7 @@ const Geo = {
   },
   text(m) {
     if (m == null) return "";
-    return m < 1000 ? `ห่าง ${Math.round(m / 10) * 10} ม.` : `ห่าง ${(m / 1000).toFixed(1)} กม.`;
+    return m < 1000 ? `ห่าง ${Math.round(m / 10) * 10} ม.` : `ห่าง ${(m / 1000).toFixed(1).replace(/\.0$/, "")} กม.`;
   }
 };
 
