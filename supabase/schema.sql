@@ -39,6 +39,7 @@ create table if not exists restaurants (
   map_url       text not null default '',
   lat           double precision,                    -- พิกัด (ร้านใกล้ฉัน / หมุดแผนที่)
   lng           double precision,
+  closed_days   int[] not null default '{}',         -- วันหยุดประจำ 0 = อาทิตย์ ... 6 = เสาร์
   images        jsonb not null default '[]',         -- [{ "src": "...", "alt": "..." }]
   image_credit  text not null default '',            -- ที่มาของภาพ
   menu          jsonb not null default '[]',         -- [{ "title": "...", "items": [["ชื่อ", "ราคา"]] }]
@@ -50,6 +51,7 @@ create table if not exists restaurants (
 -- โปรเจกต์ที่สร้างตารางไปก่อนแล้ว: เพิ่มคอลัมน์พิกัด
 alter table restaurants add column if not exists lat double precision;
 alter table restaurants add column if not exists lng double precision;
+alter table restaurants add column if not exists closed_days int[] not null default '{}';
 
 -- ข้อความจากผู้ใช้ (แนะนำร้านใหม่ / แจ้งข้อมูลผิด)
 create table if not exists suggestions (

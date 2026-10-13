@@ -69,7 +69,7 @@ function parseLatLng(text) {
 function openEditor(r) {
   const isNew = !r;
   r = r || { id: "", name: "", category_id: LOOK.categories[0]?.id || "", area_id: null, address: "", landmark: "",
-             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null,
+             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null, closed_days: [],
              images: [], image_credit: "", menu: [], published: true };
   let images = r.images.map(i => ({ ...i }));
 
@@ -91,7 +91,12 @@ function openEditor(r) {
         <label class="field">ที่อยู่ (เลขที่ / ซอย / ถนน) * <input id="e-address" value="${esc(r.address)}" placeholder="เช่น 12/3 ซอยพรธิสาร 3 ถนนรังสิต-นครนายก"></label>
         <label class="field">จุดสังเกต <input id="e-landmark" value="${esc(r.landmark)}" placeholder="เช่น ตรงข้ามร้านเอสโตว์ ห่างประตู มทร. 200 ม."></label>
         <label class="field">เวลาเปิด <input type="time" id="e-open" value="${esc(r.open_time || "")}"></label>
-        <label class="field">เวลาปิด <input type="time" id="e-close" value="${esc(r.close_time || "")}"></label>
+        <label class="field">เวลาปิด <input type="time" id="e-close" value="${esc(r.close_time || "")}">
+          <small class="hint">ร้านเปิด 24 ชม. ให้ใส่เวลาเปิดและปิดเหมือนกัน เช่น 00:00 ทั้งคู่</small>
+        </label>
+        <fieldset class="field span2 days-field"><legend>วันหยุดประจำ (ถ้ามี)</legend>
+          ${DAY_NAMES.map((d, i) => `<label class="check"><input type="checkbox" name="e-off" value="${i}" ${(r.closed_days || []).includes(i) ? "checked" : ""}> ${d}</label>`).join("")}
+        </fieldset>
         <label class="field">ราคาต่ำสุด (บาท) <input type="number" min="0" id="e-pmin" value="${r.price_min ?? ""}"></label>
         <label class="field">ราคาสูงสุด (บาท) <input type="number" min="0" id="e-pmax" value="${r.price_max ?? ""}"></label>
         <label class="field">เบอร์โทร <input id="e-phone" value="${esc(r.phone)}" placeholder="เช่น 081-234-5678"></label>
@@ -196,6 +201,7 @@ function openEditor(r) {
       landmark: $("#e-landmark").value.trim(),
       open_time: $("#e-open").value || null,
       close_time: $("#e-close").value || null,
+      closed_days: $$('input[name="e-off"]:checked', form).map(x => Number(x.value)),
       price_min: num($("#e-pmin")),
       price_max: num($("#e-pmax")),
       phone: $("#e-phone").value.trim(),

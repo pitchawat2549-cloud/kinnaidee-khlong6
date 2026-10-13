@@ -67,6 +67,7 @@ const DB = (() => {
       open_time: hhmm(r.open_time),
       close_time: hhmm(r.close_time),
       tags: r.tags || [],
+      closed_days: r.closed_days || [],
       images: r.images || [],
       menu: r.menu || []
     };

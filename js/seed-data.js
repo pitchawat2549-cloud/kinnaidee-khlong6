@@ -74,7 +74,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": 50,
       "price_max": 90,
-      "phone": "0614844971",
+      "phone": "061-484-4971",
       "tags": [
         "เมนูยอดนิยม",
         "ข้าวราดกะเพราไข่ดาว"
@@ -195,6 +195,7 @@ window.SEED = {
           ]
         }
       ],
+      "closed_days": [],
       "lat": 14.042844,
       "lng": 100.732481,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -211,7 +212,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "084-087-4685",
       "tags": [
         "ไก่ทอด",
         "สูตรปักษ์ใต้",
@@ -233,6 +234,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0385824,
       "lng": 100.7391773,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -247,9 +249,9 @@ window.SEED = {
       "landmark": "ห่างร้านไก่ทอดใบไม้ประมาณ 150 ม.",
       "open_time": "10:00",
       "close_time": "04:00",
-      "price_min": null,
-      "price_max": null,
-      "phone": "",
+      "price_min": 60,
+      "price_max": 70,
+      "phone": "063-823-3360",
       "tags": [
         "ไก่ตอนเนื้อล้วน",
         "ข้าวมันนุ่มหอม"
@@ -270,6 +272,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0382342,
       "lng": 100.7377156,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -284,8 +287,8 @@ window.SEED = {
       "landmark": "ตรงข้ามปากซอยอีสเทิร์น",
       "open_time": "10:30",
       "close_time": "21:00",
-      "price_min": null,
-      "price_max": null,
+      "price_min": 15,
+      "price_max": 30,
       "phone": "",
       "tags": [
         "น้ำซุปเข้มข้นสูตรดั้งเดิม"
@@ -306,6 +309,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.034003,
       "lng": 100.7319235,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -322,7 +326,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "095-141-9644",
       "tags": [
         "เครปไส้ทะลัก",
         "แป้งกรอบ"
@@ -343,6 +347,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0387365,
       "lng": 100.7324389,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -355,11 +360,11 @@ window.SEED = {
       "area_id": "phonthisan",
       "address": "ซอยหมู่บ้านพรธิสาร 3",
       "landmark": "ห่างร้านไก่ทอดใบไม้ประมาณ 300 ม.",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "10:00",
+      "close_time": "21:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "090-378-6752",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/kpUe4S2VJjVy6Nre9",
       "images": [
@@ -377,6 +382,9 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [
+        6
+      ],
       "lat": 14.0397335,
       "lng": 100.7415645,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -389,11 +397,11 @@ window.SEED = {
       "area_id": "canal-south",
       "address": "160 ซอยคลองหกตะวันออก 10 (ซอยหอพักซูม)",
       "landmark": "ตรงข้ามสะพานสูง ริมคลองหก",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "00:00",
+      "close_time": "00:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "092-674-3567",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/bM1jYnSp31JqwAUo7",
       "images": [
@@ -411,6 +419,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0399305,
       "lng": 100.7324838,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -423,11 +432,11 @@ window.SEED = {
       "area_id": "canal-south",
       "address": "ชั้น 1 หอพักไพลินเพลส ซอยอีสเทิร์น (ซอยบัญชาปราณี)",
       "landmark": "ห่างร้านก๋วยเตี๋ยวเรืออยุธยาประมาณ 60 ม.",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "11:00",
+      "close_time": "23:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "081-859-1467",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/GEU9oJGm31Fv7QZE8",
       "images": [
@@ -445,6 +454,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0343355,
       "lng": 100.7324788,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -457,11 +467,11 @@ window.SEED = {
       "area_id": "canal-lagoon",
       "address": "29/4 ถนนเลียบคลองหก",
       "landmark": "อาคารเดียวกับร้านก๋วยเตี๋ยวเรือรสเด็ด ๗๙",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "17:00",
+      "close_time": "01:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "087-546-8668",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/VzH64uX3DPk2ZP41A",
       "images": [
@@ -479,6 +489,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0412794,
       "lng": 100.7325037,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -491,11 +502,11 @@ window.SEED = {
       "area_id": "pink-bridge",
       "address": "98-99 หมู่ 2 ย่านยูเพลินมอลล์",
       "landmark": "ใกล้สะพานชมพู มีที่จอดรถหน้าร้าน",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "11:30",
+      "close_time": "21:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "081-448-4443",
       "tags": [
         "เย็นตาโฟ",
         "ร้านติดแอร์"
@@ -516,6 +527,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0455829,
       "lng": 100.7341706,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -532,7 +544,7 @@ window.SEED = {
       "close_time": null,
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "095-765-2241",
       "tags": [
         "ก๋วยเตี๋ยวเรือ"
       ],
@@ -552,6 +564,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0411522,
       "lng": 100.7327359,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -564,11 +577,11 @@ window.SEED = {
       "area_id": "pink-bridge",
       "address": "99 หมู่ 2 โครงการยูเพลินมอลล์",
       "landmark": "สะพานชมพู",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "17:00",
+      "close_time": "23:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "093-493-3411",
       "tags": [
         "นมสด",
         "ขนมปังปิ้ง"
@@ -589,6 +602,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.045747,
       "lng": 100.7338779,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -601,11 +615,11 @@ window.SEED = {
       "area_id": "canal-lagoon",
       "address": "ซอยมาลี ย่านซอยตะวันออก 12",
       "landmark": "เข้าซอยจากถนนเลียบคลองหกประมาณ 350 ม.",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "13:00",
+      "close_time": "22:30",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "098-182-1828",
       "tags": [
         "บิงซู",
         "ฮันนี่โทสต์"
@@ -626,6 +640,9 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [
+        4
+      ],
       "lat": 14.0428342,
       "lng": 100.7359779,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -638,11 +655,11 @@ window.SEED = {
       "area_id": "pink-bridge",
       "address": "ถนนเลียบคลองหก",
       "landmark": "ร้านเล็กริมคลอง เลยยูเพลินมอลล์ไปทางเหนือประมาณ 400 ม.",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "07:00",
+      "close_time": "17:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "095-489-0999",
       "tags": [
         "คาเฟ่",
         "มัทฉะ",
@@ -664,6 +681,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0496653,
       "lng": 100.7317761,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -676,11 +694,11 @@ window.SEED = {
       "area_id": "pink-bridge",
       "address": "99 หมู่ 2 โครงการยูเพลินมอลล์",
       "landmark": "สะพานชมพู",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "09:30",
+      "close_time": "20:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "098-619-9955",
       "tags": [
         "ชานมไข่มุก",
         "คาเฟ่"
@@ -701,6 +719,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0455133,
       "lng": 100.7324152,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -717,7 +736,7 @@ window.SEED = {
       "close_time": null,
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "093-439-4098",
       "tags": [
         "ชาเขียวนม",
         "โยเกิร์ตปั่น"
@@ -738,6 +757,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0425558,
       "lng": 100.7334052,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
@@ -750,11 +770,11 @@ window.SEED = {
       "area_id": "canal-lagoon",
       "address": "29/1 ถนนเลียบคลองหก",
       "landmark": "ใกล้ร้านขวัญใจ หม่าล่า",
-      "open_time": null,
-      "close_time": null,
+      "open_time": "07:00",
+      "close_time": "17:00",
       "price_min": null,
       "price_max": null,
-      "phone": "",
+      "phone": "092-661-4892",
       "tags": [
         "กาแฟ"
       ],
@@ -774,6 +794,7 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "closed_days": [],
       "lat": 14.0417179,
       "lng": 100.7324487,
       "image_credit": "ทีมงานกินไหนดีคลองหก",

@@ -265,3 +265,7 @@ code { background: var(--cream); padding: 1px 6px; border-radius: 6px; }
   .admin-toolbar input { max-width: none; }
   .editor-grid { grid-template-columns: 1fr; }
 }
+
+/* วันหยุดประจำ */
+.days-field { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.days-field legend { width: 100%; margin-bottom: 4px; padding: 0; }

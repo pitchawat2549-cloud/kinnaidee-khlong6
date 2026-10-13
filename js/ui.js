@@ -104,13 +104,27 @@ function priceText(r) {
   return "ไม่ระบุ";
 }
 
+const DAY_NAMES = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
+const is24h = r => r.open_time && r.open_time === r.close_time;   // เวลาเปิด = เวลาปิด คือเปิด 24 ชม.
+
+// วันหยุดประจำสัปดาห์ เช่น "หยุดทุกวันเสาร์"
+function closedDaysText(r) {
+  const d = (r.closed_days || []).slice().sort();
+  return d.length ? `หยุดทุกวัน${d.map(i => DAY_NAMES[i]).join(" และวัน")}` : "";
+}
+
 function hoursText(r) {
-  return r.open_time && r.close_time ? `${r.open_time} - ${r.close_time} น.` : "ไม่ระบุ";
+  if (!r.open_time || !r.close_time) return "ไม่ระบุ";
+  const t = is24h(r) ? "เปิด 24 ชั่วโมง" : `${r.open_time} - ${r.close_time} น.`;
+  const off = closedDaysText(r);
+  return off ? `${t} (${off})` : t;
 }
 
 // สถานะเปิด-ปิด ณ เวลาปัจจุบัน (รองรับร้านที่ปิดหลังเที่ยงคืน)
 function openStatus(r, now = new Date()) {
   if (!r.open_time || !r.close_time) return { state: "unknown", label: "ไม่ระบุเวลา" };
+  if ((r.closed_days || []).includes(now.getDay())) return { state: "closed", label: "วันนี้ร้านหยุด" };
+  if (is24h(r)) return { state: "open", open: true, label: "เปิด 24 ชั่วโมง" };
   const toMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
   const o = toMin(r.open_time), c = toMin(r.close_time);
   const n = now.getHours() * 60 + now.getMinutes();
