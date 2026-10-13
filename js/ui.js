@@ -202,7 +202,7 @@ function restaurantCard(r) {
       <div class="r-card-body">
         <p class="r-card-cat"><img src="${ROOT}${cat.icon}" alt=""> ${esc(cat.name)}</p>
         <h3>${esc(r.name)}</h3>
-        ${hasPrice(r) ? `<p class="r-card-price">ราคาเฉลี่ย <b>${esc(priceText(r))}</b></p>` : ""}
+        ${hasPrice(r) ? `<p class="r-card-price">ช่วงราคา <b>${esc(priceText(r))}</b></p>` : ""}
         <p class="r-card-meta"><img src="${ROOT}images/icons/pin.svg" alt=""> <span>${esc(where)}<small class="r-card-area">${AREA_SHORT}</small></span></p>
         ${r.open_time ? `<p class="r-card-meta"><img src="${ROOT}images/icons/clock.svg" alt=""> ${esc(hoursText(r))}</p>` : ""}
         ${r.tags.length ? `<div class="tags">${r.tags.slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
@@ -388,7 +388,7 @@ const Picker = {
           ${cover ? `<img src="${esc(imgSrc(cover.src))}" alt="">` : ""}
           <div>
             <h3>${esc(r.name)}</h3>
-            <p>${esc(getCategory(r.category_id).name)}${hasPrice(r) ? ` · ราคาเฉลี่ย ${esc(priceText(r))}` : ""}</p>
+            <p>${esc(getCategory(r.category_id).name)}${hasPrice(r) ? ` · ช่วงราคา ${esc(priceText(r))}` : ""}</p>
             ${openStatus(r).state !== "unknown" ? `<p class="badge-inline badge-${openStatus(r).state}">${esc(openStatus(r).label)}</p>` : ""}
           </div>
         </div>`;

@@ -264,3 +264,6 @@
   .menu-grid { grid-template-columns: 1fr; }
   .map { height: 240px; }
 }
+
+/* หมายเหตุที่มาของข้อมูล */
+.data-note { margin: 14px 0 4px; font-size: 13px; color: var(--muted); line-height: 1.5; }
