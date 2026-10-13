@@ -1,0 +1,31 @@
+/* ===================================================
+   favorites.css : หน้าร้านที่ถูกใจ (restaurant/favorites.html)
+   =================================================== */
+
+.fav-head {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: 34px 20px 28px;
+  text-align: center;
+  background-color: var(--cream);
+  background-image: var(--wave);
+}
+
+.fav-head h1 { font-size: clamp(30px, 3vw, 44px); font-weight: 600; }
+.fav-head p { margin: 4px 0 0; }
+
+.fav-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.clear-btn { color: var(--orange); text-decoration: underline; }
+
+.editor-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+
+@media (max-width: 640px) {
+  .fav-tools { justify-content: space-between; }
+}

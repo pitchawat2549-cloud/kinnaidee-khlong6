@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ร้านที่ถูกใจ | กินไหนดีคลองหก</title>
+  <meta name="description" content="ร้านอาหารที่คุณกดถูกใจไว้ในเว็บกินไหนดีคลองหก">
+  <link rel="icon" href="../images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/favorites.css">
+</head>
+<body data-root="../" data-page="favorites">
+
+  <header id="site-header"></header>
+
+  <main class="container">
+
+    <section class="fav-head">
+      <p class="eyebrow">เก็บไว้ในเครื่องนี้ ไม่ต้องสมัครสมาชิก</p>
+      <h1>ร้านที่ถูกใจ</h1>
+      <p class="muted" id="fav-count"></p>
+    </section>
+
+    <section class="section">
+      <div class="fav-tools" id="fav-tools" hidden>
+        <button type="button" class="btn" data-picker-fav>สุ่มจากร้านที่ถูกใจ</button>
+        <button type="button" class="link-btn clear-btn" id="fav-clear">ล้างทั้งหมด</button>
+      </div>
+      <div class="restaurant-list" id="fav-list"></div>
+    </section>
+
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/seed-data.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/favorites.js"></script>
+</body>
+</html>
