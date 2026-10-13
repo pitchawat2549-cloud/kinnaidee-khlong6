@@ -361,7 +361,7 @@ window.SEED = {
       "lat": 14.034003,
       "lng": 100.7319235,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
-      "published": true
+      "published": false
     },
     {
       "id": "crepe-krob-paktaek",
@@ -734,7 +734,7 @@ window.SEED = {
       "lat": 14.0412794,
       "lng": 100.7325037,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
-      "published": true
+      "published": false
     },
     {
       "id": "nai-waen-yentafo",

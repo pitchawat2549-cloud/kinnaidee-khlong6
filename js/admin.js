@@ -44,7 +44,8 @@ function renderRows() {
       <td><b>${esc(r.name)}</b><br><small class="muted">${esc(r.id)}</small></td>
       <td>${esc(LOOK.categories.find(c => c.id === r.category_id)?.name || "-")}</td>
       <td>${esc(hoursText(r))}</td>
-      <td>${r.published ? `<span class="pill on">เผยแพร่</span>` : `<span class="pill">ซ่อนอยู่</span>`}</td>
+      <td>${r.published ? `<span class="pill on">เผยแพร่</span>` : `<span class="pill">ซ่อนอยู่</span>`}
+        ${(() => { const m = missingForPublish(r); return m.length ? `<small class="missing">ขาด: ${esc(m.join(", "))}</small>` : ""; })()}</td>
       <td><small>${esc(fmtDate(r.updated_at))}</small></td>
       <td class="row-actions">
         <a class="link-btn" href="../restaurant/detail.html?id=${encodeURIComponent(r.id)}" target="_blank" rel="noopener">ดู</a>
@@ -52,6 +53,17 @@ function renderRows() {
         <button type="button" class="link-btn danger" data-del="${esc(r.id)}">ลบ</button>
       </td>
     </tr>`).join("") : `<tr><td colspan="7" class="muted center">ไม่พบร้าน</td></tr>`;
+}
+
+// เงื่อนไขร้านที่ "พร้อม" ขึ้นเว็บ: ที่อยู่ ราคา เวลาเปิด-ปิด เบอร์โทร เมนู ต้องครบ
+function missingForPublish(r) {
+  const m = [];
+  if (!r.address) m.push("ที่อยู่");
+  if (!r.price_min && !r.price_max) m.push("ราคา");
+  if (!r.open_time || !r.close_time) m.push("เวลาเปิด-ปิด");
+  if (!r.phone) m.push("เบอร์โทร");
+  if (!r.menu || !r.menu.some(g => g.items && g.items.length)) m.push("เมนู");
+  return m;
 }
 
 // "14.0428, 100.7325" -> { lat, lng } / ว่าง -> null / ผิดรูปแบบ -> undefined
@@ -70,7 +82,7 @@ function openEditor(r) {
   const isNew = !r;
   r = r || { id: "", name: "", category_id: LOOK.categories[0]?.id || "", area_id: null, address: "", landmark: "",
              open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null, closed_days: [],
-             images: [], image_credit: "", menu: [], published: true };
+             images: [], image_credit: "", menu: [], published: false };
   let images = r.images.map(i => ({ ...i }));
 
   const opt = (list, val, empty) =>
@@ -124,6 +136,7 @@ function openEditor(r) {
       </label>
 
       <label class="check"><input type="checkbox" id="e-pub" ${r.published ? "checked" : ""}> เผยแพร่บนหน้าเว็บ</label>
+      <small class="hint">เผยแพร่ได้เมื่อมีครบ: ที่อยู่ ราคา เวลาเปิด-ปิด เบอร์โทร และเมนู ถ้ายังไม่ครบให้บันทึกแบบซ่อนไว้ก่อน คนทั่วไปจะมองไม่เห็น</small>
       <p class="form-msg" role="alert"></p>
       <div class="editor-actions">
         <button type="button" class="btn btn-ghost" data-close>ยกเลิก</button>
@@ -221,6 +234,11 @@ function openEditor(r) {
     if ((row.open_time && !row.close_time) || (!row.open_time && row.close_time)) return (msg.textContent = "ใส่เวลาเปิดและเวลาปิดให้ครบทั้งคู่");
     if (row.price_min && row.price_max && row.price_min > row.price_max) return (msg.textContent = "ราคาต่ำสุดต้องไม่มากกว่าราคาสูงสุด");
     if (row.images.length && !row.image_credit) return (msg.textContent = "กรุณาระบุที่มาภาพ (เครดิต)");
+    // เผยแพร่ได้เฉพาะร้านที่ข้อมูลพร้อมจริง
+    if (row.published) {
+      const missing = missingForPublish(row);
+      if (missing.length) return (msg.textContent = `ยังเผยแพร่ไม่ได้ ข้อมูลยังขาด: ${missing.join(", ")} (กรอกให้ครบ หรือเอาติ๊ก "เผยแพร่" ออกเพื่อบันทึกแบบซ่อนไว้ก่อน)`);
+    }
 
     const btn = $("button[type=submit]", form);
     btn.disabled = true; btn.textContent = "กำลังบันทึก…";
