@@ -6,7 +6,10 @@
 // ===================================================
 const DB = (() => {
   const cfg = window.APP_CONFIG || {};
-  const SUPABASE_LIB = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js";
+  // ไลบรารี supabase-js 2.45.4 เก็บไว้ในเว็บเราเอง (js/vendor) ไม่ต้องรอโหลดจากเว็บนอก
+  const SUPABASE_LIB = new URL("vendor/supabase.js", document.currentScript.src).href;
+  const CACHE_KEY = "kinnaidee-data";
+  const CACHE_MS = 5 * 60 * 1000;   // จำข้อมูลร้านไว้ 5 นาที เปลี่ยนหน้าแล้วขึ้นทันที
   const BUCKET = "restaurant-images";
   const configured = Boolean(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY);
 
@@ -14,6 +17,15 @@ const DB = (() => {
   let mode = "local";          // "cloud" = Supabase, "local" = ข้อมูลสำรอง
   let ready = null;
   let cache = null;
+
+  // ถ้ารอนานเกินกำหนด ให้ถือว่าล้มเหลว (กันหน้าเว็บค้างว่างเปล่า)
+  function withTimeout(promise, ms, msg) {
+    let timer;
+    return Promise.race([
+      promise,
+      new Promise((_, reject) => { timer = setTimeout(() => reject(new Error(msg)), ms); })
+    ]).finally(() => clearTimeout(timer));
+  }
 
   function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -31,10 +43,15 @@ const DB = (() => {
     ready = (async () => {
       if (!configured) return;
       try {
-        if (!window.supabase) await loadScript(SUPABASE_LIB);
-        client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+        if (!window.supabase) await withTimeout(loadScript(SUPABASE_LIB), 6000, "โหลดไลบรารี Supabase นานเกินไป");
+        client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, {
+          // ไม่ใช้ navigator.locks: กันอาการค้างเมื่อเปิดเว็บหลายแท็บพร้อมกัน
+          auth: { lock: async (_name, _timeout, fn) => fn() }
+        });
         mode = "cloud";
       } catch (e) {
+        mode = "local";
+        client = null;
         console.warn("[DB] ใช้ข้อมูลสำรองแทน:", e.message);
       }
     })();
@@ -60,19 +77,43 @@ const DB = (() => {
   }
 
   // ---------- ข้อมูลสำหรับหน้าเว็บ ----------
+  // ข้อมูลที่จำไว้จากหน้าก่อน (ภายในแท็บเดียวกัน)
+  function readCache() {
+    try {
+      const c = JSON.parse(sessionStorage.getItem(CACHE_KEY));
+      if (c && Date.now() - c.at < CACHE_MS) return c.data;
+    } catch (e) { /* ไม่มี / ใช้ไม่ได้ */ }
+    return null;
+  }
+  function writeCache(data) {
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch (e) { /* ข้าม */ }
+  }
+  function clearCache() {
+    try { sessionStorage.removeItem(CACHE_KEY); } catch (e) { /* ข้าม */ }
+  }
+
   async function loadAll() {
     if (cache) return cache;
+    if (configured) {
+      const saved = readCache();
+      if (saved) {
+        mode = "cloud";
+        init();                       // เตรียมเชื่อมต่อไว้เบื้องหลัง (เผื่อส่งข้อความ)
+        return (cache = saved);
+      }
+    }
     await init();
     if (mode === "cloud") {
       try {
-        const [c, a, r] = await Promise.all([
+        const [c, a, r] = await withTimeout(Promise.all([
           client.from("categories").select("*").order("sort"),
           client.from("areas").select("*").order("sort"),
           client.from("restaurants").select("*").eq("published", true).order("name")
-        ]);
+        ]), 8000, "ฐานข้อมูลตอบช้าเกินไป");
         const err = c.error || a.error || r.error;
         if (err) throw err;
         cache = { categories: c.data, areas: a.data, restaurants: r.data.map(normalize) };
+        writeCache(cache);
         return cache;
       } catch (e) {
         console.warn("[DB] ดึงข้อมูลจาก Supabase ไม่ได้ ใช้ข้อมูลสำรองแทน:", e.message);
@@ -129,6 +170,7 @@ const DB = (() => {
       return { categories: c.data, areas: a.data };
     },
     async saveRestaurant(row, isNew) {
+      clearCache();
       const q = isNew
         ? client.from("restaurants").insert(row)
         : client.from("restaurants").update(row).eq("id", row.id);
@@ -139,6 +181,7 @@ const DB = (() => {
       }
     },
     async deleteRestaurant(id) {
+      clearCache();
       const { error } = await client.from("restaurants").delete().eq("id", id);
       if (error) fail(error);
     },
