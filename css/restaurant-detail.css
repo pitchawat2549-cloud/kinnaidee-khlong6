@@ -1,0 +1,266 @@
+/* ===================================================
+   restaurant-detail.css : หน้ารายละเอียดร้าน (restaurant/detail.html)
+   =================================================== */
+
+.detail { padding: 18px 20px 0; }
+
+.crumbs {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.crumbs a:hover { color: var(--orange); text-decoration: underline; }
+
+/* ===== แถวบน: รูป + ข้อมูล ===== */
+.detail-top {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+/* ---- รูป ---- */
+.gallery-main {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  padding: 0;
+  border: none;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #2A1F19;
+  cursor: zoom-in;
+}
+
+/* พื้นหลังเบลอจากรูปเดียวกัน ให้รูปแนวตั้งไม่มีขอบดำ */
+.gallery-blur {
+  position: absolute;
+  inset: -20px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(22px) brightness(0.75);
+}
+
+/* แสดงรูปเต็ม ไม่ตัดขอบ อาหารไม่ด้วน */
+.gallery-main img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.gallery-zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  color: white;
+  font-size: 13px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.gallery-main:hover .gallery-zoom,
+.gallery-main:focus-visible .gallery-zoom { opacity: 1; }
+
+.gallery-main.empty {
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: var(--cream);
+  cursor: default;
+}
+
+.gallery-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.thumb {
+  position: relative;
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--cream);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.thumb span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 10px 6px 4px;
+  font-size: 12px;
+  color: white;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
+  text-align: left;
+}
+
+.thumb.active,
+.thumb:hover { border-color: var(--orange); }
+
+.credit {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---- ข้อมูลร้าน ---- */
+.info-cat a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.info-cat img { height: 20px; }
+.info-cat a:hover { color: var(--orange); }
+
+.info h1 {
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 600;
+  margin: 4px 0 8px;
+}
+
+.info .badge-inline { font-size: 14px; padding: 4px 14px; }
+
+.info-list {
+  margin: 18px 0 12px;
+  display: grid;
+  gap: 2px;
+}
+
+.info-list > div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.info-list dt {
+  font-family: "Kanit", sans-serif;
+  color: var(--muted);
+}
+
+.info-list dd {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.info-list dd a { color: var(--orange); text-decoration: underline; }
+
+.info-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.fav-text.on { background: var(--orange); color: white; }
+
+.report {
+  margin-top: 14px;
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: underline;
+}
+
+.report:hover { color: var(--orange); }
+
+/* ===== กล่องเมนู / แผนที่ ===== */
+.panel {
+  margin-top: 30px;
+  padding: 24px 28px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+}
+
+.panel h2 { font-size: 24px; margin-bottom: 14px; }
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.panel-head h2 img { width: 18px; vertical-align: -2px; margin-right: 4px; }
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 40px;
+}
+
+.menu-group h3 {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 4px 18px;
+  background: var(--orange);
+  color: white;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.menu-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px dotted var(--border);
+  line-height: 1.6;
+}
+
+.menu-row .price { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--orange-dark); }
+
+.no-menu { grid-column: 1 / -1; margin: 0; }
+
+.map {
+  width: 100%;
+  height: 320px;
+  border: none;
+  border-radius: 16px;
+  background: var(--cream);
+}
+
+.related { padding-left: 0; padding-right: 0; }
+
+.not-found { margin: 40px 0; display: grid; gap: 10px; justify-items: center; }
+
+/* ===================================================
+   Responsive
+   =================================================== */
+@media (max-width: 1000px) {
+  .detail-top { grid-template-columns: 1fr; gap: 22px; }
+  .menu-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .detail { padding: 14px 16px 0; }
+  .gallery-main { border-radius: 14px; }
+  .gallery-thumbs { gap: 6px; }
+  .thumb span { display: none; }
+  .info-list > div { grid-template-columns: 92px 1fr; gap: 8px; }
+  .info-actions .btn { flex: 1 1 calc(50% - 10px); padding: 9px 10px; }
+  .panel { padding: 18px 16px; border-radius: 18px; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .map { height: 240px; }
+}

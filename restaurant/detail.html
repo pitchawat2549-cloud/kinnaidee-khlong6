@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายละเอียดร้าน | กินไหนดีคลองหก</title>
+  <meta name="description" content="รายละเอียดร้านอาหาร เมนู ราคา เวลาเปิด-ปิด และแผนที่">
+  <link rel="icon" href="../images/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/restaurant-detail.css">
+</head>
+<body data-root="../" data-page="restaurants">
+
+  <header id="site-header"></header>
+
+  <main class="container detail" id="detail">
+
+    <nav class="crumbs" aria-label="ตำแหน่งหน้า">
+      <a href="../index.html">หน้าแรก</a> ›
+      <a href="restaurants.html">ร้านอาหาร</a> ›
+      <span id="crumb-name"></span>
+    </nav>
+
+    <div class="detail-top">
+      <!-- รูปร้าน -->
+      <section class="gallery" aria-label="รูปร้าน">
+        <button type="button" class="gallery-main" id="gallery-main" aria-label="ดูรูปขนาดใหญ่">
+          <span class="gallery-blur" id="gallery-blur"></span>
+          <img id="gallery-img" alt="">
+          <span class="gallery-zoom">ดูรูปเต็มจอ ⤢</span>
+        </button>
+        <div class="gallery-thumbs" id="gallery-thumbs"></div>
+        <p class="credit" id="detail-credit"></p>
+      </section>
+
+      <!-- ข้อมูลร้าน -->
+      <section class="info">
+        <p class="info-cat" id="detail-cat"></p>
+        <h1 id="detail-name"></h1>
+        <p id="detail-status"></p>
+        <dl class="info-list">
+          <div id="row-price"><dt>ราคาเฉลี่ย</dt><dd id="detail-price"></dd></div>
+          <div id="row-hours"><dt>เวลาเปิด-ปิด</dt><dd id="detail-hours"></dd></div>
+          <div><dt>ที่อยู่</dt><dd id="detail-address"></dd></div>
+          <div id="row-area"><dt>โซน</dt><dd id="detail-area"></dd></div>
+          <div id="row-phone"><dt>เบอร์โทร</dt><dd id="detail-phone"></dd></div>
+        </dl>
+        <div class="tags" id="detail-tags"></div>
+        <div class="info-actions">
+          <a class="btn" id="detail-route" target="_blank" rel="noopener">ดูเส้นทาง</a>
+          <a class="btn btn-ghost" id="detail-call" hidden>โทรหาร้าน</a>
+          <button type="button" class="btn btn-ghost fav-text" id="detail-fav">♡ ถูกใจ</button>
+          <button type="button" class="btn btn-ghost" id="detail-share">แชร์ร้านนี้</button>
+        </div>
+        <button type="button" class="link-btn report" id="detail-report">ข้อมูลไม่ถูกต้อง? แจ้งทีมงาน</button>
+      </section>
+    </div>
+
+    <!-- เมนู -->
+    <section class="panel" id="menu-panel" aria-labelledby="menu-title">
+      <h2 id="menu-title">เมนูและราคา</h2>
+      <div class="menu-grid" id="detail-menu"></div>
+    </section>
+
+    <!-- แผนที่ -->
+    <section class="panel" aria-labelledby="map-title">
+      <div class="panel-head">
+        <h2 id="map-title"><img src="../images/icons/pin.svg" alt=""> ตำแหน่งร้าน</h2>
+        <a class="see-all" id="detail-route2" target="_blank" rel="noopener">เปิดใน Google Maps →</a>
+      </div>
+      <p class="muted" id="map-address"></p>
+      <iframe id="detail-map" class="map" loading="lazy" title="แผนที่ร้าน" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <!-- ร้านอื่นในหมวดเดียวกัน -->
+    <section class="section related" id="related-section" hidden>
+      <div class="section-head">
+        <h2>ร้านอื่นในหมวด<span id="related-cat"></span></h2>
+      </div>
+      <div class="restaurant-list" id="related-list"></div>
+    </section>
+
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/seed-data.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/ui.js"></script>
+  <script src="../js/detail.js"></script>
+</body>
+</html>
