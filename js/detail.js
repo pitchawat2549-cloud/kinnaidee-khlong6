@@ -21,10 +21,12 @@ App.start(data => {
   $("#crumb-name").textContent = r.name;
   $("#detail-cat").innerHTML = `<a href="restaurants.html?cat=${encodeURIComponent(cat.id)}"><img src="${ROOT}${cat.icon}" alt=""> ${esc(cat.name)}</a>`;
   $("#detail-name").textContent = r.name;
-  $("#detail-status").innerHTML = st.state !== "unknown" ? `<span class="badge-inline badge-${st.state}">${esc(st.label)}</span>` : "";
+  const dist = Geo.distance(r);
+  $("#detail-status").innerHTML = (st.state !== "unknown" ? `<span class="badge-inline badge-${st.state}" data-status="${esc(r.id)}">${esc(st.label)}</span>` : "")
+    + (dist != null ? ` <span class="badge-inline badge-dist">${esc(Geo.text(dist))}</span>` : "");
   $("#detail-price").textContent = priceText(r);
   $("#detail-hours").textContent = hoursText(r);
-  $("#detail-address").textContent = addressText(r);
+  $("#detail-address").innerHTML = addressHtml(r);
   $("#detail-area").textContent = area ? `${area.name} (${area.soi})` : "ไม่ระบุ";
   $("#detail-phone").innerHTML = r.phone ? `<a href="tel:${esc(r.phone.replace(/[^0-9+]/g, ""))}">${esc(r.phone)}</a>` : "ไม่ระบุ";
   // ซ่อนแถวที่ยังไม่มีข้อมูล
@@ -108,7 +110,9 @@ App.start(data => {
 
   // ---------- แผนที่ ----------
   $("#map-address").textContent = addressText(r);
-  $("#detail-map").src = `https://www.google.com/maps?q=${encodeURIComponent(r.name + " " + addressText(r))}&output=embed`;
+  // มีพิกัด = ปักหมุดตรงจุด, ไม่มี = ค้นหาจากชื่อ + ที่อยู่
+  const mapQuery = r.lat != null && r.lng != null ? `${r.lat},${r.lng}` : `${r.name} ${addressText(r)}`;
+  $("#detail-map").src = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=17&output=embed`;
 
   // ---------- ร้านอื่นในหมวดเดียวกัน ----------
   const related = shuffle(data.restaurants.filter(x => x.category_id === r.category_id && x.id !== r.id)).slice(0, 4);

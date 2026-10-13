@@ -41,12 +41,60 @@ function shuffle(list) {
 
 // ---------- ข้อความมาตรฐาน ----------
 const AREA_ADDRESS = "ต.คลองหก อ.คลองหลวง จ.ปทุมธานี 12120";
+const AREA_SHORT = "ต.คลองหก อ.คลองหลวง";
 
-// ที่อยู่: [เลขที่/ซอย/ถนน] ([จุดสังเกต]) ต. อ. จ. รหัสไปรษณีย์
+// แพทเทิร์นที่อยู่ (ใช้เหมือนกันทุกร้าน):
+//   [เลขที่ / ซอย / ถนน] · [จุดสังเกต] · ต.คลองหก อ.คลองหลวง จ.ปทุมธานี 12120
 function addressText(r, withArea = true) {
-  const main = [r.address, r.landmark && (r.address ? `(${r.landmark})` : r.landmark)].filter(Boolean).join(" ");
-  return withArea ? `${main} ${AREA_ADDRESS}`.trim() : main;
+  const parts = [r.address, r.landmark].filter(Boolean);
+  if (withArea) parts.push(AREA_ADDRESS);
+  return parts.join(" · ");
 }
+
+// ที่อยู่แบบหลายบรรทัด (หน้ารายละเอียดร้าน)
+function addressHtml(r) {
+  return [
+    r.address && `<span class="addr-main">${esc(r.address)}</span>`,
+    r.landmark && `<span class="addr-landmark">จุดสังเกต: ${esc(r.landmark)}</span>`,
+    `<span class="addr-area">${AREA_ADDRESS}</span>`
+  ].filter(Boolean).join("");
+}
+
+// ---------- ระยะทางจากผู้ใช้ (ร้านใกล้ฉัน) ----------
+const Geo = {
+  KEY: "kinnaidee-location",
+  get() {
+    try {
+      const g = JSON.parse(sessionStorage.getItem(this.KEY));
+      if (g && Date.now() - g.at < 30 * 60 * 1000) return g;   // จำตำแหน่งไว้ 30 นาที
+    } catch (e) { /* ไม่มี */ }
+    return null;
+  },
+  request() {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) return reject(new Error("เบราว์เซอร์นี้หาตำแหน่งไม่ได้"));
+      navigator.geolocation.getCurrentPosition(p => {
+        const g = { lat: p.coords.latitude, lng: p.coords.longitude, at: Date.now() };
+        try { sessionStorage.setItem(this.KEY, JSON.stringify(g)); } catch (e) { /* ข้าม */ }
+        resolve(g);
+      }, err => reject(new Error(err.code === 1
+        ? "ไม่ได้รับอนุญาตให้ใช้ตำแหน่ง ลองกดอนุญาตที่แถบที่อยู่เว็บ"
+        : "หาตำแหน่งไม่สำเร็จ ลองใหม่อีกครั้ง")), { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    });
+  },
+  // ระยะทางเป็นเมตร (สูตร haversine)
+  distance(r, g = this.get()) {
+    if (!g || r.lat == null || r.lng == null) return null;
+    const rad = d => d * Math.PI / 180, R = 6371000;
+    const dLat = rad(r.lat - g.lat), dLng = rad(r.lng - g.lng);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(rad(g.lat)) * Math.cos(rad(r.lat)) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(a));
+  },
+  text(m) {
+    if (m == null) return "";
+    return m < 1000 ? `ห่าง ${Math.round(m / 10) * 10} ม.` : `ห่าง ${(m / 1000).toFixed(1)} กม.`;
+  }
+};
 
 const hasPrice = r => Boolean(r.price_min || r.price_max);
 
@@ -67,9 +115,29 @@ function openStatus(r, now = new Date()) {
   const o = toMin(r.open_time), c = toMin(r.close_time);
   const n = now.getHours() * 60 + now.getMinutes();
   const open = o < c ? n >= o && n < c : n >= o || n < c;
-  return open
-    ? { state: "open", label: `เปิดอยู่ · ปิด ${r.close_time} น.` }
+  const until = t => (t - n + 1440) % 1440;          // อีกกี่นาทีถึงเวลา t
+  const mins = m => m >= 60 ? `${Math.floor(m / 60)} ชม. ${m % 60 ? `${m % 60} นาที` : ""}`.trim() : `${m} นาที`;
+  if (open) {
+    const left = until(c);
+    return left <= 60
+      ? { state: "soon", open: true, label: `ใกล้ปิด · อีก ${mins(left)}`, mins: left }
+      : { state: "open", open: true, label: `เปิดอยู่ · ปิด ${r.close_time} น.` };
+  }
+  const wait = until(o);
+  return wait <= 60
+    ? { state: "closed", label: `ใกล้เปิด · อีก ${mins(wait)}`, mins: wait }
     : { state: "closed", label: `ปิดแล้ว · เปิด ${r.open_time} น.` };
+}
+
+// อัปเดตข้อความป้ายสถานะที่อยู่บนหน้า โดยไม่ต้องวาดการ์ดใหม่
+function refreshStatus(list) {
+  $$("[data-status]").forEach(el => {
+    const r = list.find(x => x.id === el.dataset.status);
+    if (!r) return;
+    const st = openStatus(r);
+    el.textContent = st.label;
+    el.className = el.className.replace(/badge-(open|closed|soon)/, `badge-${st.state}`);
+  });
 }
 
 // ---------- ร้านที่ถูกใจ (เก็บในเบราว์เซอร์ของผู้ใช้) ----------
@@ -105,20 +173,23 @@ function restaurantCard(r) {
   const st = openStatus(r);
   const cover = r.images[0];
   const fav = Fav.has(r.id);
-  const where = r.landmark || r.address || "คลองหก";
+  const where = r.address || r.landmark || "คลองหก";
+  const dist = Geo.distance(r);
   return `
     <article class="r-card">
       <a class="r-card-link" href="${ROOT}restaurant/detail.html?id=${encodeURIComponent(r.id)}" aria-label="ดูรายละเอียด ${esc(r.name)}"></a>
       <div class="r-card-media">
-        ${cover ? `<img src="${esc(imgSrc(cover.src))}" alt="${esc(cover.alt || r.name)}" loading="lazy">` : `<div class="r-card-noimg">ยังไม่มีรูป</div>`}
-        ${st.state !== "unknown" ? `<span class="badge badge-${st.state}">${esc(st.label)}</span>` : ""}
+        ${cover ? `<div class="r-card-blur" style="background-image:url('${esc(imgSrc(cover.src))}')"></div>
+        <img src="${esc(imgSrc(cover.src))}" alt="${esc(cover.alt || r.name)}" loading="lazy">` : `<div class="r-card-noimg">ยังไม่มีรูป</div>`}
+        ${st.state !== "unknown" ? `<span class="badge badge-${st.state}" data-status="${esc(r.id)}">${esc(st.label)}</span>` : ""}
+        ${dist != null ? `<span class="dist-chip">${esc(Geo.text(dist))}</span>` : ""}
         <button type="button" class="fav-btn ${fav ? "on" : ""}" data-fav="${esc(r.id)}" aria-pressed="${fav}" aria-label="ถูกใจร้าน ${esc(r.name)}">${heartSvg()}</button>
       </div>
       <div class="r-card-body">
         <p class="r-card-cat"><img src="${ROOT}${cat.icon}" alt=""> ${esc(cat.name)}</p>
         <h3>${esc(r.name)}</h3>
         ${hasPrice(r) ? `<p class="r-card-price">ราคาเฉลี่ย <b>${esc(priceText(r))}</b></p>` : ""}
-        <p class="r-card-meta"><img src="${ROOT}images/icons/pin.svg" alt=""> ${esc(where)}</p>
+        <p class="r-card-meta"><img src="${ROOT}images/icons/pin.svg" alt=""> <span>${esc(where)}<small class="r-card-area">${AREA_SHORT}</small></span></p>
         ${r.open_time ? `<p class="r-card-meta"><img src="${ROOT}images/icons/clock.svg" alt=""> ${esc(hoursText(r))}</p>` : ""}
         ${r.tags.length ? `<div class="tags">${r.tags.slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
       </div>
@@ -284,7 +355,7 @@ const Picker = {
     return list.filter(r =>
       (!this.budget || (r.price_min && r.price_min <= this.budget)) &&
       (!this.cat || r.category_id === this.cat) &&
-      (!this.openOnly || openStatus(r).state === "open"));
+      (!this.openOnly || openStatus(r).open));
   },
   spin(list) {
     const pool = this.pool(list);
@@ -435,6 +506,8 @@ const App = {
       data.categories = data.categories.filter(c => data.restaurants.some(r => r.category_id === c.id));
       LOOKUP = { categories: data.categories, areas: data.areas };
       await pageFn(data);
+      // อัปเดตป้ายเปิด-ปิดทุก 1 นาที (นับถอยหลังเวลาปิด)
+      setInterval(() => refreshStatus(data.restaurants), 60 * 1000);
     } catch (e) {
       console.error(e);
       const main = $("main");

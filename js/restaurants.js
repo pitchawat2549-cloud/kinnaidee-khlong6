@@ -13,7 +13,7 @@ App.start(data => {
     area: p.get("area") || "all",
     open: p.get("open") === "1",
     budget: Number(p.get("budget")) || 0,
-    sort: p.get("sort") || "random",
+    sort: p.get("sort") === "near" && !Geo.get() ? "random" : (p.get("sort") || "random"),
     page: Number(p.get("page")) || 1
   };
   // ลำดับสุ่มครั้งเดียวตอนเปิดหน้า (เปลี่ยนหน้า 1, 2 ร้านไม่ซ้ำกัน)
@@ -28,6 +28,7 @@ App.start(data => {
   const els = {
     input: $("#search-input"), cat: $("#filter-category"), area: $("#filter-area"),
     open: $("#f-open"), budget: $("#f-budget"), sort: $("#sort"),
+    near: $("#near-btn"),
     list: $("#restaurant-list"), count: $("#restaurant-count"), pager: $("#pagination"), clear: $("#clear-filters")
   };
 
@@ -55,13 +56,15 @@ App.start(data => {
     els.open.checked = state.open;
     els.budget.value = state.budget;
     els.sort.value = state.sort;
+    els.near.classList.toggle("active", state.sort === "near");
+    els.near.setAttribute("aria-pressed", state.sort === "near");
 
     // กรอง
     const word = state.q.trim().toLowerCase();
     let list = (state.sort === "random" ? randomOrder : all.slice()).filter(r =>
       (state.cat === "all" || r.category_id === state.cat) &&
       (state.area === "all" || r.area_id === state.area) &&
-      (!state.open || openStatus(r).state === "open") &&
+      (!state.open || openStatus(r).open) &&
       (!state.budget || (r.price_min && r.price_min <= state.budget)) &&
       (!word || haystack(r).includes(word))
     );
@@ -69,8 +72,12 @@ App.start(data => {
     // เรียง
     if (state.sort === "name") list.sort((a, b) => a.name.localeCompare(b.name, "th"));
     if (state.sort === "price") list.sort((a, b) => (a.price_min || 9999) - (b.price_min || 9999));
+    if (state.sort === "near") {
+      const d = r => Geo.distance(r) ?? Infinity;
+      list.sort((a, b) => d(a) - d(b));
+    }
     if (state.sort === "open") {
-      const rank = r => ({ open: 0, closed: 1, unknown: 2 })[openStatus(r).state];
+      const rank = r => ({ open: 0, soon: 0, closed: 1, unknown: 2 })[openStatus(r).state];
       list.sort((a, b) => rank(a) - rank(b));
     }
 
@@ -125,8 +132,33 @@ App.start(data => {
 
   els.open.addEventListener("change", () => { state.open = els.open.checked; state.page = 1; render(); });
   els.budget.addEventListener("change", () => { state.budget = Number(els.budget.value); state.page = 1; render(); });
-  els.sort.addEventListener("change", () => {
+  // ร้านใกล้ฉัน: ขอตำแหน่งครั้งแรก แล้วเรียงจากใกล้ไปไกล
+  async function useNear() {
+    if (!Geo.get()) {
+      els.near.disabled = true;
+      els.near.lastChild.textContent = " กำลังหาตำแหน่ง…";
+      try {
+        await Geo.request();
+      } catch (err) {
+        toast(err.message);
+        state.sort = "random";
+        return;
+      } finally {
+        els.near.disabled = false;
+        els.near.lastChild.textContent = " ร้านใกล้ฉัน";
+      }
+    }
+    state.sort = "near";
+  }
+  els.near.addEventListener("click", async () => {
+    if (state.sort === "near") { state.sort = "random"; randomOrder = shuffle(all); }
+    else await useNear();
+    state.page = 1;
+    render();
+  });
+  els.sort.addEventListener("change", async () => {
     state.sort = els.sort.value;
+    if (state.sort === "near") await useNear();
     if (state.sort === "random") randomOrder = shuffle(all);
     state.page = 1;
     render();
@@ -136,6 +168,9 @@ App.start(data => {
     els.input.value = "";
     render();
   });
+
+  // มาจากปุ่ม "ร้านใกล้ฉัน" หน้าแรก (restaurants.html?near=1)
+  if (p.get("near") === "1" && state.sort !== "near") setTimeout(() => els.near.click(), 0);
 
   els.input.value = state.q;
   render();

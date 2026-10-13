@@ -195,6 +195,8 @@ window.SEED = {
           ]
         }
       ],
+      "lat": 14.042844,
+      "lng": 100.732481,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -231,6 +233,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0385824,
+      "lng": 100.7391773,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -266,6 +270,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0382342,
+      "lng": 100.7377156,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -300,6 +306,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.034003,
+      "lng": 100.7319235,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -335,6 +343,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0387365,
+      "lng": 100.7324389,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -367,6 +377,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0397335,
+      "lng": 100.7415645,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -399,6 +411,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0399305,
+      "lng": 100.7324838,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -431,6 +445,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0343355,
+      "lng": 100.7324788,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -463,6 +479,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0412794,
+      "lng": 100.7325037,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -498,6 +516,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0455829,
+      "lng": 100.7341706,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -532,6 +552,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0411522,
+      "lng": 100.7327359,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -567,6 +589,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.045747,
+      "lng": 100.7338779,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -602,6 +626,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0428342,
+      "lng": 100.7359779,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -638,6 +664,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0496653,
+      "lng": 100.7317761,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -673,6 +701,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0455133,
+      "lng": 100.7324152,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -708,6 +738,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0425558,
+      "lng": 100.7334052,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     },
@@ -742,6 +774,8 @@ window.SEED = {
         }
       ],
       "menu": [],
+      "lat": 14.0417179,
+      "lng": 100.7324487,
       "image_credit": "ทีมงานกินไหนดีคลองหก",
       "published": true
     }

@@ -37,6 +37,8 @@ create table if not exists restaurants (
   phone         text not null default '',
   tags          text[] not null default '{}',
   map_url       text not null default '',
+  lat           double precision,                    -- พิกัด (ร้านใกล้ฉัน / หมุดแผนที่)
+  lng           double precision,
   images        jsonb not null default '[]',         -- [{ "src": "...", "alt": "..." }]
   image_credit  text not null default '',            -- ที่มาของภาพ
   menu          jsonb not null default '[]',         -- [{ "title": "...", "items": [["ชื่อ", "ราคา"]] }]
@@ -44,6 +46,10 @@ create table if not exists restaurants (
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
+
+-- โปรเจกต์ที่สร้างตารางไปก่อนแล้ว: เพิ่มคอลัมน์พิกัด
+alter table restaurants add column if not exists lat double precision;
+alter table restaurants add column if not exists lng double precision;
 
 -- ข้อความจากผู้ใช้ (แนะนำร้านใหม่ / แจ้งข้อมูลผิด)
 create table if not exists suggestions (

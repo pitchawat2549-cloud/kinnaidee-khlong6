@@ -27,7 +27,7 @@
         <p>ค้นหาด้วยชื่อร้าน ชื่อเมนู หรือชื่อซอย</p>
         <form class="search-bar" id="search-form" role="search">
           <img src="../images/icons/search.svg" alt="">
-          <input type="search" id="search-input" placeholder="เช่น กะเพรา, หม่าล่า, พรธิสาร" aria-label="ค้นหาร้านหรือเมนู">
+          <input type="search" id="search-input" placeholder="เช่น กะเพรา, หม่าล่า" aria-label="ค้นหาร้านหรือเมนู">
           <button class="btn" type="submit">ค้นหา</button>
         </form>
       </div>
@@ -45,6 +45,9 @@
         <div class="chips" id="filter-area"></div>
       </div>
       <div class="filter-row filter-extra">
+        <button type="button" class="near-btn" id="near-btn" aria-pressed="false">
+          <img src="../images/icons/pin.svg" alt=""> ร้านใกล้ฉัน
+        </button>
         <label class="check"><input type="checkbox" id="f-open"> เปิดอยู่ตอนนี้</label>
         <label class="field field-inline">งบต่อมื้อ
           <select id="f-budget">
@@ -72,6 +75,7 @@
               <option value="name">ชื่อร้าน ก-ฮ</option>
               <option value="price">ราคาน้อย → มาก</option>
               <option value="open">ร้านที่เปิดอยู่ก่อน</option>
+              <option value="near">ใกล้ฉันที่สุด</option>
             </select>
           </label>
         </div>

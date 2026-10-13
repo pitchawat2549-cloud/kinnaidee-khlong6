@@ -114,6 +114,7 @@
 }
 
 @media (max-width: 640px) {
+  .hero-home { height: auto; }
   .hero-images {
     flex: none;
     width: 100%;
@@ -143,4 +144,18 @@
   .pick-band h2 { font-size: 26px; }
   .pick-band-photos { height: 150px; order: -1; }
 
+}
+
+/* การ์ดประเภทอาหาร: สีพื้นตามหมวด */
+.category-card { --tint: var(--cream); background: linear-gradient(180deg, var(--tint) 0%, white 70%); }
+.category-card[data-cat="rice"]    { --tint: #FBE3D2; }
+.category-card[data-cat="noodle"]  { --tint: #FCEFC7; }
+.category-card[data-cat="dessert"] { --tint: #FADDE1; }
+.category-card[data-cat="fruit"]   { --tint: #E2F0D6; }
+.category-card[data-cat="drink"]   { --tint: #E8DCCF; }
+.category-card img {
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
 }

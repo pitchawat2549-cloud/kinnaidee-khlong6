@@ -170,3 +170,23 @@
   .result-tools { width: 100%; justify-content: space-between; }
   .pagination button { width: 38px; height: 38px; }
 }
+
+/* ปุ่มร้านใกล้ฉัน */
+.near-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  background: white;
+  font-family: "Kanit", sans-serif;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.near-btn img { width: 13px; }
+.near-btn:hover { border-color: var(--orange); }
+.near-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+.near-btn.active img { filter: brightness(0) invert(1); }
+.near-btn:disabled { opacity: 0.7; cursor: wait; }

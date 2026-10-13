@@ -54,11 +54,22 @@ function renderRows() {
     </tr>`).join("") : `<tr><td colspan="7" class="muted center">ไม่พบร้าน</td></tr>`;
 }
 
+// "14.0428, 100.7325" -> { lat, lng } / ว่าง -> null / ผิดรูปแบบ -> undefined
+function parseLatLng(text) {
+  const t = text.trim();
+  if (!t) return { lat: null, lng: null };
+  const m = t.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+  if (!m) return { lat: undefined, lng: undefined };
+  const lat = Number(m[1]), lng = Number(m[2]);
+  if (lat < 5 || lat > 21 || lng < 97 || lng > 106) return { lat: undefined, lng: undefined };   // นอกประเทศไทย
+  return { lat, lng };
+}
+
 // ---------- ฟอร์มเพิ่ม / แก้ไขร้าน ----------
 function openEditor(r) {
   const isNew = !r;
   r = r || { id: "", name: "", category_id: LOOK.categories[0]?.id || "", area_id: null, address: "", landmark: "",
-             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "",
+             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null,
              images: [], image_credit: "", menu: [], published: true };
   let images = r.images.map(i => ({ ...i }));
 
@@ -77,7 +88,7 @@ function openEditor(r) {
         </label>
         <label class="field">หมวดหมู่ <select id="e-cat">${opt(LOOK.categories, r.category_id)}</select></label>
         <label class="field">โซน <select id="e-area">${opt(LOOK.areas, r.area_id, "ไม่ระบุ")}</select></label>
-        <label class="field">ที่อยู่ (เลขที่ / ซอย / ถนน) <input id="e-address" value="${esc(r.address)}" placeholder="เช่น 12/3 ซอยพรธิสาร 3 ถนนรังสิต-นครนายก"></label>
+        <label class="field">ที่อยู่ (เลขที่ / ซอย / ถนน) * <input id="e-address" value="${esc(r.address)}" placeholder="เช่น 12/3 ซอยพรธิสาร 3 ถนนรังสิต-นครนายก"></label>
         <label class="field">จุดสังเกต <input id="e-landmark" value="${esc(r.landmark)}" placeholder="เช่น ตรงข้ามร้านเอสโตว์ ห่างประตู มทร. 200 ม."></label>
         <label class="field">เวลาเปิด <input type="time" id="e-open" value="${esc(r.open_time || "")}"></label>
         <label class="field">เวลาปิด <input type="time" id="e-close" value="${esc(r.close_time || "")}"></label>
@@ -85,6 +96,10 @@ function openEditor(r) {
         <label class="field">ราคาสูงสุด (บาท) <input type="number" min="0" id="e-pmax" value="${r.price_max ?? ""}"></label>
         <label class="field">เบอร์โทร <input id="e-phone" value="${esc(r.phone)}" placeholder="เช่น 081-234-5678"></label>
         <label class="field">ลิงก์ Google Maps <input id="e-map" value="${esc(r.map_url)}" placeholder="https://maps.app.goo.gl/..."></label>
+        <label class="field span2">พิกัด (ละติจูด, ลองจิจูด) สำหรับ "ร้านใกล้ฉัน" และหมุดในแผนที่
+          <input id="e-latlng" value="${r.lat != null ? `${r.lat}, ${r.lng}` : ""}" placeholder="เช่น 14.0428, 100.7325" inputmode="decimal">
+          <small class="hint">เปิด Google Maps คลิกขวาที่ตำแหน่งร้าน แล้วกดตัวเลขบรรทัดแรกเพื่อคัดลอก มาวางที่นี่</small>
+        </label>
         <label class="field span2">แท็ก (คั่นด้วยจุลภาค ,) <input id="e-tags" value="${esc(r.tags.join(", "))}" placeholder="เช่น เมนูยอดนิยม, ไข่ดาวกรอบ"></label>
       </div>
       <p class="muted small">ที่อยู่จะแสดงเป็น: <b id="e-preview"></b></p>
@@ -185,6 +200,7 @@ function openEditor(r) {
       price_max: num($("#e-pmax")),
       phone: $("#e-phone").value.trim(),
       map_url: $("#e-map").value.trim(),
+      ...parseLatLng($("#e-latlng").value),
       tags: $("#e-tags").value.split(",").map(s => s.trim()).filter(Boolean),
       images: images.map(i => ({ src: i.src, alt: (i.alt || "").trim() })),
       image_credit: $("#e-credit").value.trim(),
@@ -194,7 +210,8 @@ function openEditor(r) {
     // ตรวจข้อมูล
     if (!row.name) return (msg.textContent = "กรุณาใส่ชื่อร้าน");
     if (!/^[a-z0-9-]+$/.test(row.id)) return (msg.textContent = "รหัสร้านใช้ได้เฉพาะ a-z, 0-9 และ - เท่านั้น");
-    if (!row.address && !row.landmark) return (msg.textContent = "กรุณาใส่ที่อยู่ หรือจุดสังเกตอย่างน้อย 1 ช่อง");
+    if (!row.address) return (msg.textContent = "กรุณาใส่ที่อยู่ (เลขที่ / ซอย / ถนน)");
+    if (row.lat === undefined) return (msg.textContent = "พิกัดไม่ถูกต้อง ใส่แบบ 14.0428, 100.7325");
     if ((row.open_time && !row.close_time) || (!row.open_time && row.close_time)) return (msg.textContent = "ใส่เวลาเปิดและเวลาปิดให้ครบทั้งคู่");
     if (row.price_min && row.price_max && row.price_min > row.price_max) return (msg.textContent = "ราคาต่ำสุดต้องไม่มากกว่าราคาสูงสุด");
     if (row.images.length && !row.image_credit) return (msg.textContent = "กรุณาระบุที่มาภาพ (เครดิต)");
