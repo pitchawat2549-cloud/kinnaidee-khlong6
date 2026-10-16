@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ไม่พบหน้านี้ | กินไหนดีคลองหก</title>
+  <meta name="robots" content="noindex">
+  <!-- หน้านี้ GitHub Pages ใช้แสดงเมื่อพิมพ์ลิงก์ผิด ทุกลิงก์จึงต้องเป็นแบบเต็ม (ขึ้นต้นด้วย /kinnaidee-khlong6/) -->
+  <link rel="icon" href="/kinnaidee-khlong6/images/favicon/favicon.ico?v=2" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="/kinnaidee-khlong6/images/favicon/favicon-32.png?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/kinnaidee-khlong6/css/common.css?v=20261016">
+  <style>
+    .nf { text-align: center; padding: 56px 20px 10px; }
+    .nf .nf-code {
+      font-family: "Kanit", sans-serif; font-weight: 600; font-size: clamp(80px, 14vw, 140px);
+      line-height: 1; color: var(--orange); margin: 0;
+    }
+    .nf h1 { font-size: clamp(24px, 3vw, 32px); margin: 10px 0 6px; }
+    .nf p { color: var(--muted); margin: 0 auto 22px; max-width: 460px; }
+    .nf-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body data-root="/kinnaidee-khlong6/" data-page="404">
+
+  <header id="site-header"></header>
+
+  <main class="container">
+    <section class="nf">
+      <p class="nf-code" aria-hidden="true">404</p>
+      <h1>ไม่พบหน้านี้</h1>
+      <p>ลิงก์อาจพิมพ์ผิด หรือหน้านี้ถูกย้ายไปแล้ว ลองกลับหน้าแรก หรือให้เว็บสุ่มร้านให้เลยก็ได้</p>
+      <div class="nf-actions">
+        <a class="btn" href="/kinnaidee-khlong6/index.html">กลับหน้าแรก</a>
+        <a class="btn btn-ghost" href="/kinnaidee-khlong6/restaurant/restaurants.html">ดูร้านอาหารทั้งหมด</a>
+        <button type="button" class="btn btn-ghost" data-picker>กินอะไรดี? สุ่มเลย</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>หรือลองร้านเหล่านี้</h2>
+      </div>
+      <div class="restaurant-list" id="nf-list"></div>
+    </section>
+  </main>
+
+  <footer id="site-footer"></footer>
+
+  <script src="/kinnaidee-khlong6/js/config.js?v=20261016"></script>
+  <script src="/kinnaidee-khlong6/js/seed-data.js?v=20261016"></script>
+  <script src="/kinnaidee-khlong6/js/api.js?v=20261016"></script>
+  <script src="/kinnaidee-khlong6/js/ui.js?v=20261016"></script>
+  <script>
+    App.start(data => {
+      $("#nf-list").innerHTML = shuffle(data.restaurants).slice(0, 4).map(restaurantCard).join("");
+    });
+  </script>
+</body>
+</html>

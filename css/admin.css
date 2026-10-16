@@ -270,3 +270,7 @@ code { background: var(--cream); padding: 1px 6px; border-radius: 6px; }
 .days-field { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
 .days-field legend { width: 100%; margin-bottom: 4px; padding: 0; }
 .missing { display: block; margin-top: 4px; font-size: 12px; color: var(--red); line-height: 1.4; }
+.verify-row { display: flex; gap: 8px; align-items: center; }
+.verify-row input { flex: 1; }
+.btn-sm { padding: 6px 14px; font-size: 14px; white-space: nowrap; }
+.verified-mini { display: block; margin-top: 4px; font-size: 12px; color: var(--green); }

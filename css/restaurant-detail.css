@@ -267,3 +267,5 @@
 
 /* หมายเหตุที่มาของข้อมูล */
 .data-note { margin: 14px 0 4px; font-size: 13px; color: var(--muted); line-height: 1.5; }
+.verified { margin: 14px 0 0; font-family: "Kanit", sans-serif; font-size: 14px; color: var(--green); }
+.verified + .data-note { margin-top: 4px; }

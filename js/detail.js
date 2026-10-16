@@ -34,6 +34,11 @@ App.start(data => {
   $("#row-hours").hidden = !r.open_time;
   $("#row-area").hidden = !area;
   $("#row-phone").hidden = !r.phone;
+  // ทีมงานยืนยันข้อมูลกับร้านแล้ว
+  if (r.verified_at) {
+    $("#detail-verified").hidden = false;
+    $("#detail-verified").textContent = `✓ ทีมงานยืนยันข้อมูลกับร้านแล้ว เมื่อ ${thaiDate(r.verified_at)}`;
+  }
   $("#detail-tags").innerHTML = r.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("");
 
   // ---------- รูป ----------

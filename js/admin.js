@@ -45,7 +45,8 @@ function renderRows() {
       <td>${esc(LOOK.categories.find(c => c.id === r.category_id)?.name || "-")}</td>
       <td>${esc(hoursText(r))}</td>
       <td>${r.published ? `<span class="pill on">เผยแพร่</span>` : `<span class="pill">ซ่อนอยู่</span>`}
-        ${(() => { const m = missingForPublish(r); return m.length ? `<small class="missing">ขาด: ${esc(m.join(", "))}</small>` : ""; })()}</td>
+        ${(() => { const m = missingForPublish(r); return m.length ? `<small class="missing">ขาด: ${esc(m.join(", "))}</small>` : ""; })()}
+        ${r.verified_at ? `<small class="verified-mini">✓ ยืนยันแล้ว ${esc(thaiDate(r.verified_at))}</small>` : ""}</td>
       <td><small>${esc(fmtDate(r.updated_at))}</small></td>
       <td class="row-actions">
         <a class="link-btn" href="../restaurant/detail.html?id=${encodeURIComponent(r.id)}" target="_blank" rel="noopener">ดู</a>
@@ -81,7 +82,7 @@ function parseLatLng(text) {
 function openEditor(r) {
   const isNew = !r;
   r = r || { id: "", name: "", category_id: LOOK.categories[0]?.id || "", area_id: null, address: "", landmark: "",
-             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null, closed_days: [],
+             open_time: "", close_time: "", price_min: null, price_max: null, phone: "", tags: [], map_url: "", lat: null, lng: null, closed_days: [], verified_at: null,
              images: [], image_credit: "", menu: [], published: false };
   let images = r.images.map(i => ({ ...i }));
 
@@ -133,6 +134,14 @@ function openEditor(r) {
       <label class="field">
         <textarea id="e-menu" rows="8" placeholder="# เนื้อสัตว์&#10;หมูกรอบ | 60 / 80 บาท&#10;&#10;# ท็อปปิ้ง&#10;ไข่ดาว | 10 บาท">${esc(menuToText(r.menu))}</textarea>
         <small class="hint">ขึ้นบรรทัดด้วย # = ชื่อหมวด, บรรทัดอื่น = ชื่อเมนู | ราคา</small>
+      </label>
+
+      <label class="field verify-field">วันที่โทร / ไปยืนยันข้อมูลกับร้าน
+        <span class="verify-row">
+          <input type="date" id="e-verified" value="${esc(r.verified_at ? String(r.verified_at).slice(0, 10) : "")}">
+          <button type="button" class="btn btn-ghost btn-sm" id="e-verified-today">ยืนยันวันนี้</button>
+        </span>
+        <small class="hint">ใส่เมื่อเช็กกับร้านจริงแล้ว หน้าร้านจะขึ้น "ทีมงานยืนยันข้อมูลกับร้านแล้ว" พร้อมวันที่ เว้นว่างได้ถ้ายังไม่ได้เช็ก</small>
       </label>
 
       <label class="check"><input type="checkbox" id="e-pub" ${r.published ? "checked" : ""}> เผยแพร่บนหน้าเว็บ</label>
@@ -201,6 +210,10 @@ function openEditor(r) {
   });
 
   form.addEventListener("click", e => { if (e.target.closest("[data-close]")) closeModal(); });
+  $("#e-verified-today").addEventListener("click", () => {
+    const d = new Date();
+    $("#e-verified").value = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  });
 
   form.addEventListener("submit", async e => {
     e.preventDefault();
@@ -224,6 +237,7 @@ function openEditor(r) {
       images: images.map(i => ({ src: i.src, alt: (i.alt || "").trim() })),
       image_credit: $("#e-credit").value.trim(),
       menu: textToMenu($("#e-menu").value),
+      verified_at: $("#e-verified").value || null,
       published: $("#e-pub").checked
     };
     // ตรวจข้อมูล

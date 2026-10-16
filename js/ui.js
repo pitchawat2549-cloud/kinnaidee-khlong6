@@ -60,6 +60,13 @@ function addressHtml(r) {
   ].filter(Boolean).join("");
 }
 
+// วันที่แบบไทย เช่น 16 ต.ค. 2569
+function thaiDate(d) {
+  if (!d) return "";
+  const t = new Date(`${String(d).slice(0, 10)}T00:00:00`);
+  return isNaN(t) ? "" : t.toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "numeric" });
+}
+
 // ---------- ระยะทางจากผู้ใช้ (ร้านใกล้ฉัน) ----------
 const Geo = {
   KEY: "kinnaidee-location",
