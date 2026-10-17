@@ -74,7 +74,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": 50,
       "price_max": 90,
-      "phone": "061-484-4971",
+      "phone": "06-1484-4971",
       "tags": [
         "เมนูยอดนิยม",
         "ข้าวราดกะเพราไข่ดาว"
@@ -212,7 +212,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": 30,
       "price_max": 180,
-      "phone": "084-087-4685",
+      "phone": "08-4087-4685",
       "tags": [
         "ไก่ทอด",
         "สูตรปักษ์ใต้",
@@ -277,7 +277,7 @@ window.SEED = {
       "close_time": "04:00",
       "price_min": 60,
       "price_max": 70,
-      "phone": "063-823-3360",
+      "phone": "06-3823-3360",
       "tags": [
         "ไก่ตอนเนื้อล้วน",
         "ข้าวมันนุ่มหอม"
@@ -374,7 +374,7 @@ window.SEED = {
       "close_time": "22:00",
       "price_min": 30,
       "price_max": 100,
-      "phone": "095-141-9644",
+      "phone": "09-5141-9644",
       "tags": [
         "เครปไส้ทะลัก",
         "แป้งกรอบ"
@@ -539,7 +539,7 @@ window.SEED = {
       "close_time": "21:00",
       "price_min": 65,
       "price_max": 90,
-      "phone": "090-378-6752",
+      "phone": "09-0378-6752",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/kpUe4S2VJjVy6Nre9",
       "images": [
@@ -590,7 +590,7 @@ window.SEED = {
       "close_time": "00:00",
       "price_min": 55,
       "price_max": 126,
-      "phone": "092-674-3567",
+      "phone": "09-2674-3567",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/bM1jYnSp31JqwAUo7",
       "images": [
@@ -651,7 +651,7 @@ window.SEED = {
       "close_time": "23:00",
       "price_min": 10,
       "price_max": 58,
-      "phone": "081-859-1467",
+      "phone": "08-1859-1467",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/GEU9oJGm31Fv7QZE8",
       "images": [
@@ -712,7 +712,7 @@ window.SEED = {
       "close_time": "01:00",
       "price_min": 5,
       "price_max": 50,
-      "phone": "087-546-8668",
+      "phone": "08-7546-8668",
       "tags": [],
       "map_url": "https://maps.app.goo.gl/VzH64uX3DPk2ZP41A",
       "images": [
@@ -747,7 +747,7 @@ window.SEED = {
       "close_time": "21:00",
       "price_min": 78,
       "price_max": 135,
-      "phone": "081-448-4443",
+      "phone": "08-1448-4443",
       "tags": [
         "เย็นตาโฟ",
         "ร้านติดแอร์"
@@ -811,7 +811,7 @@ window.SEED = {
       "close_time": null,
       "price_min": null,
       "price_max": null,
-      "phone": "095-765-2241",
+      "phone": "09-5765-2241",
       "tags": [
         "ก๋วยเตี๋ยวเรือ"
       ],
@@ -848,7 +848,7 @@ window.SEED = {
       "close_time": "23:00",
       "price_min": null,
       "price_max": null,
-      "phone": "093-493-3411",
+      "phone": "09-3493-3411",
       "tags": [
         "นมสด",
         "ขนมปังปิ้ง"
@@ -886,7 +886,7 @@ window.SEED = {
       "close_time": "22:30",
       "price_min": null,
       "price_max": null,
-      "phone": "098-182-1828",
+      "phone": "09-8182-1828",
       "tags": [
         "บิงซู",
         "ฮันนี่โทสต์"
@@ -926,7 +926,7 @@ window.SEED = {
       "close_time": "17:00",
       "price_min": 30,
       "price_max": 90,
-      "phone": "095-489-0999",
+      "phone": "09-5489-0999",
       "tags": [
         "คาเฟ่",
         "มัทฉะ",
@@ -991,7 +991,7 @@ window.SEED = {
       "close_time": "20:00",
       "price_min": 25,
       "price_max": 45,
-      "phone": "098-619-9955",
+      "phone": "09-8619-9955",
       "tags": [
         "ชานมไข่มุก",
         "คาเฟ่"
@@ -1047,7 +1047,7 @@ window.SEED = {
       "close_time": null,
       "price_min": null,
       "price_max": null,
-      "phone": "093-439-4098",
+      "phone": "09-3439-4098",
       "tags": [
         "ชาเขียวนม",
         "โยเกิร์ตปั่น"
@@ -1085,7 +1085,7 @@ window.SEED = {
       "close_time": "17:00",
       "price_min": 25,
       "price_max": 90,
-      "phone": "092-661-4892",
+      "phone": "09-2661-4892",
       "tags": [
         "กาแฟ"
       ],

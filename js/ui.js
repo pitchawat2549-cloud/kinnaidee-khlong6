@@ -60,6 +60,20 @@ function addressHtml(r) {
   ].filter(Boolean).join("");
 }
 
+// จัดรูปแบบเบอร์โทรไทย
+//   มือถือ 10 หลัก -> 2-4-4  (08-1234-5678) ตามที่อาจารย์กำหนด
+//   บ้านกรุงเทพฯ 02 -> 2-3-4 (02-549-4990)
+//   บ้านต่างจังหวัด 9 หลัก -> 3-3-3 (034-123-456)
+// คืนค่า "" ถ้าไม่ใช่เบอร์ไทยที่ถูกต้อง
+function formatPhone(raw) {
+  let d = String(raw || "").replace(/\D/g, "");
+  if (d.startsWith("66")) d = "0" + d.slice(2);          // +66 81 ... -> 081 ...
+  if (/^0[689]\d{8}$/.test(d)) return `${d.slice(0, 2)}-${d.slice(2, 6)}-${d.slice(6)}`;
+  if (/^02\d{7}$/.test(d)) return `${d.slice(0, 2)}-${d.slice(2, 5)}-${d.slice(5)}`;
+  if (/^0[3-7]\d{7}$/.test(d)) return `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`;
+  return "";
+}
+
 // วันที่แบบไทย เช่น 16 ต.ค. 2569
 function thaiDate(d) {
   if (!d) return "";

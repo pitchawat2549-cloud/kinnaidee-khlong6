@@ -112,7 +112,7 @@ function openEditor(r) {
         </fieldset>
         <label class="field">ราคาต่ำสุด (บาท) <input type="number" min="0" id="e-pmin" value="${r.price_min ?? ""}"></label>
         <label class="field">ราคาสูงสุด (บาท) <input type="number" min="0" id="e-pmax" value="${r.price_max ?? ""}"></label>
-        <label class="field">เบอร์โทร <input id="e-phone" value="${esc(r.phone)}" placeholder="เช่น 081-234-5678"></label>
+        <label class="field">เบอร์โทร <input id="e-phone" value="${esc(r.phone)}" placeholder="เช่น 08-1234-5678"></label>
         <label class="field">ลิงก์ Google Maps <input id="e-map" value="${esc(r.map_url)}" placeholder="https://maps.app.goo.gl/..."></label>
         <label class="field span2">พิกัด (ละติจูด, ลองจิจูด) สำหรับ "ร้านใกล้ฉัน" และหมุดในแผนที่
           <input id="e-latlng" value="${r.lat != null ? `${r.lat}, ${r.lng}` : ""}" placeholder="เช่น 14.0428, 100.7325" inputmode="decimal">
@@ -244,6 +244,13 @@ function openEditor(r) {
     if (!row.name) return (msg.textContent = "กรุณาใส่ชื่อร้าน");
     if (!/^[a-z0-9-]+$/.test(row.id)) return (msg.textContent = "รหัสร้านใช้ได้เฉพาะ a-z, 0-9 และ - เท่านั้น");
     if (!row.address) return (msg.textContent = "กรุณาใส่ที่อยู่ (เลขที่ / ซอย / ถนน)");
+    // เบอร์โทร: จัดรูปแบบให้เป็นมาตรฐานเดียวกันอัตโนมัติ (มือถือ 2-4-4)
+    if (row.phone) {
+      const ph = formatPhone(row.phone);
+      if (!ph) return (msg.textContent = "เบอร์โทรไม่ถูกต้อง มือถือต้องมี 10 หลัก เช่น 08-1234-5678 (เบอร์บ้าน 9 หลัก เช่น 02-549-4990)");
+      row.phone = ph;
+      $("#e-phone").value = ph;
+    }
     if (row.lat === undefined) return (msg.textContent = "พิกัดไม่ถูกต้อง ใส่แบบ 14.0428, 100.7325");
     if ((row.open_time && !row.close_time) || (!row.open_time && row.close_time)) return (msg.textContent = "ใส่เวลาเปิดและเวลาปิดให้ครบทั้งคู่");
     if (row.price_min && row.price_max && row.price_min > row.price_max) return (msg.textContent = "ราคาต่ำสุดต้องไม่มากกว่าราคาสูงสุด");

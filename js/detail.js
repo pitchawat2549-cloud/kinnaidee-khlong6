@@ -28,7 +28,7 @@ App.start(data => {
   $("#detail-hours").textContent = hoursText(r);
   $("#detail-address").innerHTML = addressHtml(r);
   $("#detail-area").textContent = area ? `${area.name} (${area.soi})` : "ไม่ระบุ";
-  $("#detail-phone").innerHTML = r.phone ? `<a href="tel:${esc(r.phone.replace(/[^0-9+]/g, ""))}">${esc(r.phone)}</a>` : "ไม่ระบุ";
+  $("#detail-phone").innerHTML = r.phone ? `<a href="tel:${esc(r.phone.replace(/[^0-9+]/g, ""))}">${esc(formatPhone(r.phone) || r.phone)}</a>` : "ไม่ระบุ";
   // ซ่อนแถวที่ยังไม่มีข้อมูล
   $("#row-price").hidden = !hasPrice(r);
   $("#row-hours").hidden = !r.open_time;
