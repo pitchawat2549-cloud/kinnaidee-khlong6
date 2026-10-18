@@ -586,7 +586,10 @@ window.SEED = {
       "price_min": 65,
       "price_max": 90,
       "phone": "09-0378-6752",
-      "tags": [],
+      "tags": [
+        "แกงเขียวหวาน",
+        "แกงพริก"
+      ],
       "map_url": "https://maps.app.goo.gl/kpUe4S2VJjVy6Nre9",
       "images": [
         {
@@ -637,7 +640,10 @@ window.SEED = {
       "price_min": 37,
       "price_max": 126,
       "phone": "09-2674-3567",
-      "tags": [],
+      "tags": [
+        "โจ๊ก",
+        "ข้าวหน้าไก่"
+      ],
       "map_url": "https://maps.app.goo.gl/bM1jYnSp31JqwAUo7",
       "images": [
         {
@@ -748,7 +754,10 @@ window.SEED = {
       "price_min": 10,
       "price_max": 58,
       "phone": "08-1859-1467",
-      "tags": [],
+      "tags": [
+        "หม่าล่า",
+        "เลือกของใส่เอง"
+      ],
       "map_url": "https://maps.app.goo.gl/GEU9oJGm31Fv7QZE8",
       "images": [
         {
@@ -1664,7 +1673,8 @@ window.SEED = {
       "price_max": 90,
       "phone": "09-2661-4892",
       "tags": [
-        "กาแฟ"
+        "กาแฟ",
+        "ชาไทย"
       ],
       "map_url": "https://maps.app.goo.gl/d38HCAYMEFQYuyWC7",
       "images": [

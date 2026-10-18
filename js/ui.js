@@ -120,9 +120,11 @@ function closedDaysText(r) {
 
 function hoursText(r) {
   if (!r.open_time || !r.close_time) return "ไม่ระบุ";
-  const t = is24h(r) ? "เปิด 24 ชั่วโมง" : `${r.open_time} - ${r.close_time} น.`;
+  const overnight = !is24h(r) && r.close_time <= r.open_time;
+  const t = is24h(r) ? "เปิด 24 ชั่วโมง" : `${r.open_time} - ${r.close_time} น.${overnight ? " ของวันถัดไป" : ""}`;
   const off = closedDaysText(r);
-  return off ? `${t} (${off})` : t;
+  if (is24h(r) && !off) return "เปิด 24 ชั่วโมง ทุกวัน";
+  return `${t} (${off || "เปิดทุกวัน"})`;
 }
 
 function openStatus(r, now = new Date()) {
