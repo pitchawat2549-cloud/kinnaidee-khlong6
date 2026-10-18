@@ -20,13 +20,15 @@ App.start(data => {
   $("#pick-photos").innerHTML = shuffle(list.filter(r => r.images[0])).slice(0, 3)
     .map(r => `<img src="${esc(imgSrc(r.images[0].src))}" alt="">`).join("");
 
-  if (openNow.length) {
+  const shownOpen = shuffle(openNow).slice(0, 4);
+  if (shownOpen.length) {
     $("#open-section").hidden = false;
     $("#open-time").textContent = `ณ เวลา ${time} น.`;
-    $("#home-open").innerHTML = shuffle(openNow).slice(0, 4).map(restaurantCard).join("");
+    $("#home-open").innerHTML = shownOpen.map(restaurantCard).join("");
   }
 
-  $("#home-restaurants").innerHTML = shuffle(list).slice(0, 4).map(restaurantCard).join("");
+  const others = list.filter(r => !shownOpen.includes(r));
+  $("#home-restaurants").innerHTML = shuffle(others.length ? others : list).slice(0, 4).map(restaurantCard).join("");
 
   const renderFavs = () => {
     const favs = list.filter(r => Fav.has(r.id));

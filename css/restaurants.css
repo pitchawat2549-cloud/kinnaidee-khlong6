@@ -150,7 +150,7 @@
   .filters { padding: 14px; gap: 10px; }
   .filter-row { flex-direction: column; align-items: stretch; gap: 6px; }
   .filter-row h3 { width: auto; font-size: 15px; }
-  .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .chips { flex-wrap: wrap; }
   .chip { flex: none; font-size: 14px; padding: 4px 14px; }
   .filter-extra { flex-direction: row; align-items: center; }
 

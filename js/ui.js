@@ -320,9 +320,9 @@ const Picker = {
           <label class="field">งบต่อมื้อ
             <select id="pk-budget">
               <option value="0">ไม่จำกัดงบ</option>
-              <option value="50">ไม่เกิน 50 บาท</option>
-              <option value="80">ไม่เกิน 80 บาท</option>
-              <option value="120">ไม่เกิน 120 บาท</option>
+              <option value="50">มีเมนูไม่เกิน 50 บาท</option>
+              <option value="80">มีเมนูไม่เกิน 80 บาท</option>
+              <option value="120">มีเมนูไม่เกิน 120 บาท</option>
             </select>
           </label>
           <label class="field">หมวด
@@ -481,7 +481,7 @@ function renderChrome() {
           <a href="${ROOT}admin/login.html">สำหรับผู้ดูแลระบบ</a>
         </div>
       </div>
-      <p class="copyright">© 2026 กินไหนดีคลองหก</p>`;
+      <p class="copyright">© ${new Date().getFullYear() + 543} กินไหนดีคลองหก</p>`;
   }
 }
 

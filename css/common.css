@@ -1,5 +1,5 @@
 :root {
-  --orange: #D96A33;          --orange-dark: #B9541F;
+  --orange: #BC5520;          --orange-dark: #9E4518;
   --yellow: #F9D66C;
   --cream: #F6EEE3;           --bg: #FDFBF6;              --border: #EFE3D3;
   --text: #3B2A22;
@@ -518,7 +518,7 @@ button { font: inherit; color: inherit; }
 
 .suggest-form { display: grid; gap: 14px; }
 
-.modal-picker { max-width: 520px; background-image: var(--wave); background-color: var(--bg); }
+.modal-picker { max-width: 520px; background-color: var(--bg); }
 
 .picker h2 { font-size: 34px; color: var(--orange); }
 
@@ -848,3 +848,5 @@ button { font: inherit; color: inherit; }
 }
 @media (max-width: 360px) {
   #home-q, #search-input { font-size: 14px; }   }
+
+.r-card-body .tags { margin-top: auto; padding-top: 8px; }

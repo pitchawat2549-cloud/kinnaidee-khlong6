@@ -68,7 +68,6 @@
   padding: 34px 40px;
   border-radius: 28px;
   background-color: var(--cream);
-  background-image: var(--wave);
   overflow: hidden;
 }
 
@@ -111,10 +110,8 @@
   }
 
   .category-list {
-    display: flex;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    scroll-snap-type: x mandatory;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .category-card {
