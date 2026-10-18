@@ -1,14 +1,9 @@
-/* ===================================================
-   favorites.css : หน้าร้านที่ถูกใจ (restaurant/favorites.html)
-   =================================================== */
-
 .fav-head {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   padding: 34px 20px 28px;
   text-align: center;
   background-color: var(--cream);
-  background-image: var(--wave);
 }
 
 .fav-head h1 { font-size: clamp(30px, 3vw, 44px); font-weight: 600; }

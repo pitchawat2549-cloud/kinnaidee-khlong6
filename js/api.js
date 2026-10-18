@@ -1,24 +1,16 @@
-// ===================================================
-// api.js : ตัวกลางดึงข้อมูล
-// - ตั้งค่า Supabase ไว้ใน config.js  -> ดึงจากฐานข้อมูลจริง
-// - ยังไม่ตั้งค่า / เชื่อมต่อไม่ได้      -> ใช้ข้อมูลสำรองใน seed-data.js
-// ทุกหน้าเรียกข้อมูลผ่าน DB.xxx() เท่านั้น
-// ===================================================
 const DB = (() => {
   const cfg = window.APP_CONFIG || {};
-  // ไลบรารี supabase-js 2.45.4 เก็บไว้ในเว็บเราเอง (js/vendor) ไม่ต้องรอโหลดจากเว็บนอก
   const SUPABASE_LIB = new URL("vendor/supabase.js", document.currentScript.src).href;
   const CACHE_KEY = "kinnaidee-data";
-  const CACHE_MS = 5 * 60 * 1000;   // จำข้อมูลร้านไว้ 5 นาที เปลี่ยนหน้าแล้วขึ้นทันที
+  const CACHE_MS = 5 * 60 * 1000;
   const BUCKET = "restaurant-images";
   const configured = Boolean(cfg.SUPABASE_URL && cfg.SUPABASE_ANON_KEY);
 
   let client = null;
-  let mode = "local";          // "cloud" = Supabase, "local" = ข้อมูลสำรอง
+  let mode = "local";
   let ready = null;
   let cache = null;
 
-  // ถ้ารอนานเกินกำหนด ให้ถือว่าล้มเหลว (กันหน้าเว็บค้างว่างเปล่า)
   function withTimeout(promise, ms, msg) {
     let timer;
     return Promise.race([
@@ -37,7 +29,6 @@ const DB = (() => {
     });
   }
 
-  // เริ่มเชื่อมต่อครั้งเดียว
   function init() {
     if (ready) return ready;
     ready = (async () => {
@@ -45,7 +36,6 @@ const DB = (() => {
       try {
         if (!window.supabase) await withTimeout(loadScript(SUPABASE_LIB), 6000, "โหลดไลบรารี Supabase นานเกินไป");
         client = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY, {
-          // ไม่ใช้ navigator.locks: กันอาการค้างเมื่อเปิดเว็บหลายแท็บพร้อมกัน
           auth: { lock: async (_name, _timeout, fn) => fn() }
         });
         mode = "cloud";
@@ -58,7 +48,6 @@ const DB = (() => {
     return ready;
   }
 
-  // แปลงเวลา "11:30:00" -> "11:30"
   const hhmm = t => (t ? String(t).slice(0, 5) : null);
 
   function normalize(r) {
@@ -77,20 +66,18 @@ const DB = (() => {
     throw new Error(error.message || "เชื่อมต่อฐานข้อมูลไม่สำเร็จ");
   }
 
-  // ---------- ข้อมูลสำหรับหน้าเว็บ ----------
-  // ข้อมูลที่จำไว้จากหน้าก่อน (ภายในแท็บเดียวกัน)
   function readCache() {
     try {
       const c = JSON.parse(sessionStorage.getItem(CACHE_KEY));
       if (c && Date.now() - c.at < CACHE_MS) return c.data;
-    } catch (e) { /* ไม่มี / ใช้ไม่ได้ */ }
+    } catch (e) {  }
     return null;
   }
   function writeCache(data) {
-    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch (e) { /* ข้าม */ }
+    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ at: Date.now(), data })); } catch (e) {  }
   }
   function clearCache() {
-    try { sessionStorage.removeItem(CACHE_KEY); } catch (e) { /* ข้าม */ }
+    try { sessionStorage.removeItem(CACHE_KEY); } catch (e) {  }
   }
 
   async function loadAll() {
@@ -99,7 +86,7 @@ const DB = (() => {
       const saved = readCache();
       if (saved) {
         mode = "cloud";
-        init();                       // เตรียมเชื่อมต่อไว้เบื้องหลัง (เผื่อส่งข้อความ)
+        init();
         return (cache = saved);
       }
     }
@@ -139,7 +126,6 @@ const DB = (() => {
     if (error) fail(error);
   }
 
-  // ---------- สำหรับหน้าแอดมิน ----------
   const admin = {
     async session() {
       await init();

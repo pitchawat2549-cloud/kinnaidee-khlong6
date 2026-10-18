@@ -1,7 +1,3 @@
-// ===================================================
-// restaurants.js : หน้ารวมร้านอาหาร (ค้นหา / กรอง / เรียง / แบ่งหน้า)
-// ตัวกรองทั้งหมดอยู่ในลิงก์ด้วย เช่น restaurants.html?cat=rice&open=1
-// ===================================================
 const PER_PAGE = 8;
 
 App.start(data => {
@@ -14,14 +10,12 @@ App.start(data => {
     open: p.get("open") === "1",
     budget: Number(p.get("budget")) || 0,
     sort: p.get("sort") === "near" && !Geo.get() ? "random" : (p.get("sort") || "random"),
-    near: p.get("near") === "1" && Boolean(Geo.get()),          // ตัวกรองร้านใกล้ฉัน (ใช้คู่กับ "เรียงตาม" ได้)
+    near: p.get("near") === "1" && Boolean(Geo.get()),
     radius: p.has("r") ? Number(p.get("r")) : 1000,
     page: Number(p.get("page")) || 1
   };
-  // ลำดับสุ่มครั้งเดียวตอนเปิดหน้า (เปลี่ยนหน้า 1, 2 ร้านไม่ซ้ำกัน)
   let randomOrder = shuffle(all);
 
-  // ข้อความที่ใช้ค้นหา: ชื่อ แท็ก เมนู หมวด ที่อยู่
   const haystack = r => [
     r.name, ...r.tags, getCategory(r.category_id).name, r.address, r.landmark,
     ...r.menu.flatMap(g => g.items.map(i => i[0]))
@@ -48,7 +42,6 @@ App.start(data => {
   }
 
   function render() {
-    // ปุ่มหมวด / พื้นที่
     const chip = (key, id, label, n) =>
       `<button type="button" class="chip ${state[key] === id ? "active" : ""}" data-${key}="${esc(id)}" aria-pressed="${state[key] === id}">${esc(label)}${n !== undefined ? ` <small>${n}</small>` : ""}</button>`;
     els.cat.innerHTML = chip("cat", "all", "ทั้งหมด", all.length) +
@@ -64,7 +57,6 @@ App.start(data => {
     els.radius.hidden = !state.near;
     els.radius.value = state.radius;
 
-    // กรอง
     const word = state.q.trim().toLowerCase();
     let list = (state.sort === "random" ? randomOrder : all.slice()).filter(r =>
       (state.cat === "all" || r.category_id === state.cat) &&
@@ -75,7 +67,6 @@ App.start(data => {
       (!word || haystack(r).includes(word))
     );
 
-    // เรียง
     if (state.sort === "name") list.sort((a, b) => a.name.localeCompare(b.name, "th"));
     if (state.sort === "price") list.sort((a, b) => (a.price_min || 9999) - (b.price_min || 9999));
     if (state.sort === "near") {
@@ -91,7 +82,6 @@ App.start(data => {
     els.clear.hidden = !filtered;
     els.count.textContent = `พบ ${list.length} ร้าน` + (word ? ` สำหรับ "${state.q.trim()}"` : "");
 
-    // แบ่งหน้า
     const pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
     state.page = Math.min(Math.max(1, state.page), pages);
     const pageList = list.slice((state.page - 1) * PER_PAGE, state.page * PER_PAGE);
@@ -114,7 +104,6 @@ App.start(data => {
     syncUrl();
   }
 
-  // ---------- การกด ----------
   document.addEventListener("click", e => {
     const b = e.target.closest("button");
     if (!b) return;
@@ -133,12 +122,10 @@ App.start(data => {
     state.page = 1;
     render();
   });
-  // ค้นหาทันทีขณะพิมพ์
   els.input.addEventListener("input", () => { state.q = els.input.value; state.page = 1; render(); });
 
   els.open.addEventListener("change", () => { state.open = els.open.checked; state.page = 1; render(); });
   els.budget.addEventListener("change", () => { state.budget = Number(els.budget.value); state.page = 1; render(); });
-  // ขอตำแหน่งครั้งแรก (ครั้งต่อไปใช้ที่จำไว้) คืนค่า true ถ้าได้ตำแหน่ง
   async function ensureLocation() {
     if (Geo.get()) return true;
     const label = $("span", els.near);
@@ -155,10 +142,8 @@ App.start(data => {
       label.textContent = "ร้านใกล้ฉัน";
     }
   }
-  // ปุ่มร้านใกล้ฉัน = ตัวกรองตามระยะ (เรียงตามอะไรก็ได้)
   els.near.addEventListener("click", async () => {
     state.near = state.near ? false : await ensureLocation();
-    // อยู่ไกลจากย่านนี้ (ไม่มีร้านในระยะที่เลือก) -> แสดงทุกระยะ เรียงจากใกล้ไปไกล
     if (state.near && state.radius && !all.some(r => (Geo.distance(r) ?? Infinity) <= state.radius)) {
       state.radius = 0;
       state.sort = "near";
@@ -181,7 +166,6 @@ App.start(data => {
     render();
   });
 
-  // มาจากปุ่ม "ร้านใกล้ฉัน" หน้าแรก (restaurants.html?near=1) แต่ยังไม่มีตำแหน่ง -> ขอตำแหน่ง
   if (p.get("near") === "1" && !state.near) setTimeout(() => els.near.click(), 0);
 
   els.input.value = state.q;

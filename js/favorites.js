@@ -1,7 +1,3 @@
-// ===================================================
-// favorites.js : หน้าร้านที่ถูกใจ (restaurant/favorites.html)
-// รายการเก็บในเบราว์เซอร์ของผู้ใช้ (localStorage) ผ่าน Fav ใน ui.js
-// ===================================================
 App.start(data => {
   const render = () => {
     const ids = Fav.all();
@@ -20,7 +16,6 @@ App.start(data => {
   render();
   document.addEventListener("favchange", render);
 
-  // ล้างทั้งหมด (ยืนยันก่อน)
   $("#fav-clear").addEventListener("click", () => {
     const m = openModal(`
       <h2>ล้างร้านที่ถูกใจทั้งหมด?</h2>
@@ -40,7 +35,6 @@ App.start(data => {
     });
   });
 
-  // สุ่มเฉพาะร้านที่ถูกใจ
   document.addEventListener("click", e => {
     if (!e.target.closest("[data-picker-fav]")) return;
     const list = data.restaurants.filter(r => Fav.has(r.id));

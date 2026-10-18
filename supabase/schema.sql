@@ -1,20 +1,10 @@
--- ===================================================
--- schema.sql : โครงสร้างฐานข้อมูล กินไหนดีคลองหก (Supabase / PostgreSQL)
--- วิธีใช้: Supabase > SQL Editor > วางทั้งไฟล์ > Run (รันซ้ำได้ ไม่พัง)
--- จากนั้นรัน seed.sql เพื่อใส่ข้อมูลร้านเริ่มต้น
--- ===================================================
-
--- ---------- ตาราง ----------
-
--- หมวดหมู่อาหาร
 create table if not exists categories (
-  id    text primary key,          -- เช่น rice, noodle
-  name  text not null,             -- ชื่อที่แสดง
-  icon  text not null,             -- path ไอคอน เช่น images/icons/rice.svg
+  id    text primary key,
+  name  text not null,
+  icon  text not null,
   sort  int  not null default 0
 );
 
--- โซนพื้นที่
 create table if not exists areas (
   id    text primary key,
   name  text not null,
@@ -22,52 +12,48 @@ create table if not exists areas (
   sort  int  not null default 0
 );
 
--- ร้านอาหาร
 create table if not exists restaurants (
-  id            text primary key,                    -- ใช้ในลิงก์ เช่น detail.html?id=kaprao-mae
+  id            text primary key,
   name          text not null,
   category_id   text references categories(id) on update cascade on delete set null,
   area_id       text references areas(id)      on update cascade on delete set null,
-  address       text not null default '',            -- เลขที่ / ซอย / ถนน
-  landmark      text not null default '',            -- จุดสังเกต เช่น ตรงข้ามร้านเอสโตว์
-  open_time     time,                                -- เวลาเปิด (ว่าง = ไม่ระบุ)
-  close_time    time,                                -- เวลาปิด (ปิดหลังเที่ยงคืนได้ เช่น 04:00)
+  address       text not null default '',
+  landmark      text not null default '',
+  open_time     time,
+  close_time    time,
   price_min     int  check (price_min is null or price_min >= 0),
   price_max     int  check (price_max is null or price_max >= 0),
   phone         text not null default '',
   tags          text[] not null default '{}',
   map_url       text not null default '',
-  lat           double precision,                    -- พิกัด (ร้านใกล้ฉัน / หมุดแผนที่)
+  lat           double precision,
   lng           double precision,
-  closed_days   int[] not null default '{}',         -- วันหยุดประจำ 0 = อาทิตย์ ... 6 = เสาร์
-  verified_at   date,                                -- วันที่ทีมงานยืนยันข้อมูลกับร้าน
-  images        jsonb not null default '[]',         -- [{ "src": "...", "alt": "..." }]
-  image_credit  text not null default '',            -- ที่มาของภาพ
-  menu          jsonb not null default '[]',         -- [{ "title": "...", "items": [["ชื่อ", "ราคา"]] }]
-  published     boolean not null default true,       -- false = ซ่อนจากหน้าเว็บ
+  closed_days   int[] not null default '{}',
+  verified_at   date,
+  images        jsonb not null default '[]',
+  image_credit  text not null default '',
+  menu          jsonb not null default '[]',
+  published     boolean not null default true,
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
 
--- โปรเจกต์ที่สร้างตารางไปก่อนแล้ว: เพิ่มคอลัมน์พิกัด
 alter table restaurants add column if not exists lat double precision;
 alter table restaurants add column if not exists lng double precision;
 alter table restaurants add column if not exists closed_days int[] not null default '{}';
 alter table restaurants add column if not exists verified_at date;
 
--- ข้อความจากผู้ใช้ (แนะนำร้านใหม่ / แจ้งข้อมูลผิด)
 create table if not exists suggestions (
   id             bigint generated always as identity primary key,
   kind           text not null check (kind in ('new', 'fix')),
   restaurant_id  text,
-  name           text not null default '',          -- ชื่อร้านที่แนะนำ
+  name           text not null default '',
   message        text not null check (char_length(message) between 3 and 1000),
   contact        text not null default '' check (char_length(contact) <= 200),
   status         text not null default 'new' check (status in ('new', 'done')),
   created_at     timestamptz not null default now()
 );
 
--- อัปเดต updated_at อัตโนมัติ
 create or replace function set_updated_at() returns trigger
 language plpgsql as $$
 begin
@@ -78,11 +64,6 @@ end $$;
 drop trigger if exists restaurants_updated_at on restaurants;
 create trigger restaurants_updated_at before update on restaurants
 for each row execute function set_updated_at();
-
--- ---------- สิทธิ์ (Row Level Security) ----------
--- คนทั่วไป: อ่านได้อย่างเดียว + ส่งข้อความแนะนำได้
--- แอดมินที่ล็อกอิน: แก้ไขได้ทุกอย่าง
--- (ต้องปิดการสมัครสมาชิกใน Supabase ด้วย ดู README)
 
 alter table categories  enable row level security;
 alter table areas       enable row level security;
@@ -113,7 +94,6 @@ create policy "แอดมินแก้ข้อความ" on suggestions 
 drop policy if exists "แอดมินลบข้อความ" on suggestions;
 create policy "แอดมินลบข้อความ" on suggestions for delete to authenticated using (true);
 
--- ---------- ที่เก็บรูป (Storage) ----------
 insert into storage.buckets (id, name, public)
 values ('restaurant-images', 'restaurant-images', true)
 on conflict (id) do nothing;

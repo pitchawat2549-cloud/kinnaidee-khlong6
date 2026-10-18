@@ -1,19 +1,6 @@
-// ===================================================
-// ui.js : ส่วนที่ทุกหน้าใช้ร่วมกัน
-// - เมนูด้านบน / ท้ายเว็บ
-// - การ์ดร้าน, ป้ายเปิด-ปิด, ราคา, ที่อยู่
-// - ร้านที่ถูกใจ (เก็บในเครื่องผู้ใช้)
-// - ดูรูปเต็มจอ (lightbox)
-// - ปุ่ม "กินอะไรดี?" สุ่มร้านตามงบ
-// - หน้าต่างแจ้งข้อมูล / แนะนำร้าน
-// ต้องโหลด config.js, seed-data.js, api.js ก่อนไฟล์นี้
-// ===================================================
-
-// หน้าในโฟลเดอร์ย่อยใส่ <body data-root="../">
 const ROOT = document.body.dataset.root || "";
 const PAGE = document.body.dataset.page || "";
 
-// ---------- ฟังก์ชันช่วย ----------
 const $ = (sel, el = document) => el.querySelector(sel);
 const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
 
@@ -21,7 +8,6 @@ function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-// รูปในเครื่อง (images/...) ต้องเติม ROOT, รูปจาก Supabase เป็นลิงก์เต็มอยู่แล้ว
 function imgSrc(src) {
   return /^https?:\/\//.test(src) ? src : ROOT + src;
 }
@@ -39,19 +25,15 @@ function shuffle(list) {
   return a;
 }
 
-// ---------- ข้อความมาตรฐาน ----------
 const AREA_ADDRESS = "ต.คลองหก อ.คลองหลวง จ.ปทุมธานี 12120";
 const AREA_SHORT = "ต.คลองหก อ.คลองหลวง";
 
-// แพทเทิร์นที่อยู่ (ใช้เหมือนกันทุกร้าน):
-//   [เลขที่ / ซอย / ถนน] · [จุดสังเกต] · ต.คลองหก อ.คลองหลวง จ.ปทุมธานี 12120
 function addressText(r, withArea = true) {
   const parts = [r.address, r.landmark].filter(Boolean);
   if (withArea) parts.push(AREA_ADDRESS);
   return parts.join(" · ");
 }
 
-// ที่อยู่แบบหลายบรรทัด (หน้ารายละเอียดร้าน)
 function addressHtml(r) {
   return [
     r.address && `<span class="addr-main">${esc(r.address)}</span>`,
@@ -60,35 +42,28 @@ function addressHtml(r) {
   ].filter(Boolean).join("");
 }
 
-// จัดรูปแบบเบอร์โทรไทย
-//   มือถือ 10 หลัก -> 2-4-4  (08-1234-5678) ตามที่อาจารย์กำหนด
-//   บ้านกรุงเทพฯ 02 -> 2-3-4 (02-549-4990)
-//   บ้านต่างจังหวัด 9 หลัก -> 3-3-3 (034-123-456)
-// คืนค่า "" ถ้าไม่ใช่เบอร์ไทยที่ถูกต้อง
 function formatPhone(raw) {
   let d = String(raw || "").replace(/\D/g, "");
-  if (d.startsWith("66")) d = "0" + d.slice(2);          // +66 81 ... -> 081 ...
+  if (d.startsWith("66")) d = "0" + d.slice(2);
   if (/^0[689]\d{8}$/.test(d)) return `${d.slice(0, 2)}-${d.slice(2, 6)}-${d.slice(6)}`;
   if (/^02\d{7}$/.test(d)) return `${d.slice(0, 2)}-${d.slice(2, 5)}-${d.slice(5)}`;
   if (/^0[3-7]\d{7}$/.test(d)) return `${d.slice(0, 3)}-${d.slice(3, 6)}-${d.slice(6)}`;
   return "";
 }
 
-// วันที่แบบไทย เช่น 16 ต.ค. 2569
 function thaiDate(d) {
   if (!d) return "";
   const t = new Date(`${String(d).slice(0, 10)}T00:00:00`);
   return isNaN(t) ? "" : t.toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "numeric" });
 }
 
-// ---------- ระยะทางจากผู้ใช้ (ร้านใกล้ฉัน) ----------
 const Geo = {
   KEY: "kinnaidee-location",
   get() {
     try {
       const g = JSON.parse(sessionStorage.getItem(this.KEY));
-      if (g && Date.now() - g.at < 30 * 60 * 1000) return g;   // จำตำแหน่งไว้ 30 นาที
-    } catch (e) { /* ไม่มี */ }
+      if (g && Date.now() - g.at < 30 * 60 * 1000) return g;
+    } catch (e) {  }
     return null;
   },
   request() {
@@ -96,14 +71,13 @@ const Geo = {
       if (!navigator.geolocation) return reject(new Error("เบราว์เซอร์นี้หาตำแหน่งไม่ได้"));
       navigator.geolocation.getCurrentPosition(p => {
         const g = { lat: p.coords.latitude, lng: p.coords.longitude, at: Date.now() };
-        try { sessionStorage.setItem(this.KEY, JSON.stringify(g)); } catch (e) { /* ข้าม */ }
+        try { sessionStorage.setItem(this.KEY, JSON.stringify(g)); } catch (e) {  }
         resolve(g);
       }, err => reject(new Error(err.code === 1
         ? "ไม่ได้รับอนุญาตให้ใช้ตำแหน่ง ลองกดอนุญาตที่แถบที่อยู่เว็บ"
         : "หาตำแหน่งไม่สำเร็จ ลองใหม่อีกครั้ง")), { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
     });
   },
-  // ระยะทางเป็นเมตร (สูตร haversine)
   distance(r, g = this.get()) {
     if (!g || r.lat == null || r.lng == null) return null;
     const rad = d => d * Math.PI / 180, R = 6371000;
@@ -126,9 +100,8 @@ function priceText(r) {
 }
 
 const DAY_NAMES = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
-const is24h = r => r.open_time && r.open_time === r.close_time;   // เวลาเปิด = เวลาปิด คือเปิด 24 ชม.
+const is24h = r => r.open_time && r.open_time === r.close_time;
 
-// วันหยุดประจำสัปดาห์ เช่น "หยุดทุกวันเสาร์"
 function closedDaysText(r) {
   const d = (r.closed_days || []).slice().sort();
   return d.length ? `หยุดทุกวัน${d.map(i => DAY_NAMES[i]).join(" และวัน")}` : "";
@@ -141,7 +114,6 @@ function hoursText(r) {
   return off ? `${t} (${off})` : t;
 }
 
-// สถานะเปิด-ปิด ณ เวลาปัจจุบัน (รองรับร้านที่ปิดหลังเที่ยงคืน)
 function openStatus(r, now = new Date()) {
   if (!r.open_time || !r.close_time) return { state: "unknown", label: "ไม่ระบุเวลา" };
   if ((r.closed_days || []).includes(now.getDay())) return { state: "closed", label: "วันนี้ร้านหยุด" };
@@ -150,7 +122,7 @@ function openStatus(r, now = new Date()) {
   const o = toMin(r.open_time), c = toMin(r.close_time);
   const n = now.getHours() * 60 + now.getMinutes();
   const open = o < c ? n >= o && n < c : n >= o || n < c;
-  const until = t => (t - n + 1440) % 1440;          // อีกกี่นาทีถึงเวลา t
+  const until = t => (t - n + 1440) % 1440;
   const mins = m => m >= 60 ? `${Math.floor(m / 60)} ชม. ${m % 60 ? `${m % 60} นาที` : ""}`.trim() : `${m} นาที`;
   if (open) {
     const left = until(c);
@@ -164,7 +136,6 @@ function openStatus(r, now = new Date()) {
     : { state: "closed", label: `ปิดแล้ว · เปิด ${r.open_time} น.` };
 }
 
-// อัปเดตข้อความป้ายสถานะที่อยู่บนหน้า โดยไม่ต้องวาดการ์ดใหม่
 function refreshStatus(list) {
   $$("[data-status]").forEach(el => {
     const r = list.find(x => x.id === el.dataset.status);
@@ -175,7 +146,6 @@ function refreshStatus(list) {
   });
 }
 
-// ---------- ร้านที่ถูกใจ (เก็บในเบราว์เซอร์ของผู้ใช้) ----------
 const Fav = {
   KEY: "kinnaidee-favorites",
   all() {
@@ -183,22 +153,20 @@ const Fav = {
   },
   has(id) { return this.all().includes(id); },
   clear() {
-    try { localStorage.removeItem(this.KEY); } catch { /* โหมดไม่ระบุตัวตน */ }
+    try { localStorage.removeItem(this.KEY); } catch {  }
   },
   toggle(id) {
     const list = this.all();
     const next = list.includes(id) ? list.filter(x => x !== id) : [...list, id];
-    try { localStorage.setItem(this.KEY, JSON.stringify(next)); } catch { /* โหมดไม่ระบุตัวตน */ }
+    try { localStorage.setItem(this.KEY, JSON.stringify(next)); } catch {  }
     return next.includes(id);
   }
 };
 
-// ---------- ข้อมูลหมวด / พื้นที่ ----------
 let LOOKUP = { categories: [], areas: [] };
 const getCategory = id => LOOKUP.categories.find(c => c.id === id) || { id: "", name: "ไม่ระบุหมวด", icon: "images/icons/rice.svg" };
 const getArea = id => LOOKUP.areas.find(a => a.id === id);
 
-// ---------- การ์ดร้าน ----------
 function heartSvg() {
   return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.1C.9 8.6 3 5 6.5 5c2 0 3.3 1.1 4 2.2.2.3.8.3 1 0C12.2 6.1 13.5 5 15.5 5 19 5 21.1 8.6 19.6 11.9 17.5 16.4 12 21 12 21z"/></svg>`;
 }
@@ -231,7 +199,6 @@ function restaurantCard(r) {
     </article>`;
 }
 
-// ปุ่มถูกใจ (ใช้ได้ทุกหน้า)
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-fav]");
   if (!b) return;
@@ -245,7 +212,6 @@ document.addEventListener("click", e => {
   document.dispatchEvent(new CustomEvent("favchange"));
 });
 
-// ---------- แจ้งเตือนสั้นๆ ----------
 function toast(msg) {
   let t = $("#toast");
   if (!t) {
@@ -260,7 +226,6 @@ function toast(msg) {
   t._timer = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-// ---------- หน้าต่าง (modal) ----------
 function openModal(html, cls = "") {
   closeModal();
   const wrap = document.createElement("div");
@@ -285,7 +250,6 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") { closeModal(); Lightbox.close(); }
 });
 
-// ---------- ดูรูปเต็มจอ ----------
 const Lightbox = {
   list: [], index: 0, credit: "",
   open(images, index = 0, credit = "") {
@@ -305,7 +269,6 @@ const Lightbox = {
         else if (e.target.closest(".lb-next")) this.go(1);
         else if (e.target === lb || e.target.closest(".lb-close")) this.close();
       });
-      // ปัดซ้าย-ขวาบนมือถือ
       let x0 = null;
       lb.addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
       lb.addEventListener("touchend", e => {
@@ -345,7 +308,6 @@ const Lightbox = {
   }
 };
 
-// ---------- ปุ่ม "กินอะไรดี?" สุ่มร้านตามงบ ----------
 const Picker = {
   budget: 0, cat: "", openOnly: false,
   async open() {
@@ -439,7 +401,6 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-picker]")) { e.preventDefault(); Picker.open(); }
 });
 
-// ---------- หน้าต่างแจ้งข้อมูลผิด / แนะนำร้าน ----------
 function openSuggestForm({ kind = "new", restaurant = null } = {}) {
   const isFix = kind === "fix";
   const m = openModal(`
@@ -478,7 +439,6 @@ function openSuggestForm({ kind = "new", restaurant = null } = {}) {
   });
 }
 
-// ---------- เมนูด้านบน + ท้ายเว็บ (ทุกหน้าใช้ชุดเดียวกัน) ----------
 function renderChrome() {
   const nav = [
     ["home", "index.html", "หน้าแรก"],
@@ -530,18 +490,14 @@ document.addEventListener("click", e => {
   if (s) openSuggestForm({ kind: s.dataset.suggest });
 });
 
-// ---------- เริ่มทำงาน ----------
 const App = {
-  // ทุกหน้าเรียก App.start(ฟังก์ชันของหน้านั้น)
   async start(pageFn) {
     renderChrome();
     try {
       const data = await DB.loadAll();
-      // ซ่อนหมวดที่ยังไม่มีร้าน
       data.categories = data.categories.filter(c => data.restaurants.some(r => r.category_id === c.id));
       LOOKUP = { categories: data.categories, areas: data.areas };
       await pageFn(data);
-      // อัปเดตป้ายเปิด-ปิดทุก 1 นาที (นับถอยหลังเวลาปิด)
       setInterval(() => refreshStatus(data.restaurants), 60 * 1000);
     } catch (e) {
       console.error(e);

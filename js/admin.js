@@ -1,16 +1,7 @@
-// ===================================================
-// admin.js : ระบบจัดการร้าน (admin/index.html)
-// เพิ่ม / แก้ไข / ลบร้าน, อัปโหลดรูป, อ่านข้อความจากผู้ใช้
-// ต้องล็อกอินก่อน (สิทธิ์คุมด้วย RLS ใน Supabase)
-// ===================================================
 let RESTAURANTS = [];
 let SUGGESTIONS = [];
 let LOOK = { categories: [], areas: [] };
 
-// ---------- เมนู: แปลงข้อความ <-> ข้อมูล ----------
-// รูปแบบในช่องกรอก:
-//   # ชื่อหมวด
-//   ชื่อเมนู | ราคา
 function menuToText(menu) {
   return (menu || []).map(g => `# ${g.title}\n` + g.items.map(i => `${i[0]} | ${i[1]}`).join("\n")).join("\n\n");
 }
@@ -33,7 +24,6 @@ function textToMenu(text) {
 
 const fmtDate = d => d ? new Date(d).toLocaleString("th-TH", { dateStyle: "medium", timeStyle: "short" }) : "-";
 
-// ---------- ตารางร้าน ----------
 function renderRows() {
   const q = $("#admin-search").value.trim().toLowerCase();
   const rows = RESTAURANTS.filter(r => !q || r.name.toLowerCase().includes(q) || r.id.includes(q));
@@ -56,7 +46,6 @@ function renderRows() {
     </tr>`).join("") : `<tr><td colspan="7" class="muted center">ไม่พบร้าน</td></tr>`;
 }
 
-// เงื่อนไขร้านที่ "พร้อม" ขึ้นเว็บ: ที่อยู่ ราคา เวลาเปิด-ปิด เบอร์โทร เมนู ต้องครบ
 function missingForPublish(r) {
   const m = [];
   if (!r.address) m.push("ที่อยู่");
@@ -67,18 +56,16 @@ function missingForPublish(r) {
   return m;
 }
 
-// "14.0428, 100.7325" -> { lat, lng } / ว่าง -> null / ผิดรูปแบบ -> undefined
 function parseLatLng(text) {
   const t = text.trim();
   if (!t) return { lat: null, lng: null };
   const m = t.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
   if (!m) return { lat: undefined, lng: undefined };
   const lat = Number(m[1]), lng = Number(m[2]);
-  if (lat < 5 || lat > 21 || lng < 97 || lng > 106) return { lat: undefined, lng: undefined };   // นอกประเทศไทย
+  if (lat < 5 || lat > 21 || lng < 97 || lng > 106) return { lat: undefined, lng: undefined };
   return { lat, lng };
 }
 
-// ---------- ฟอร์มเพิ่ม / แก้ไขร้าน ----------
 function openEditor(r) {
   const isNew = !r;
   r = r || { id: "", name: "", category_id: LOOK.categories[0]?.id || "", area_id: null, address: "", landmark: "",
@@ -162,7 +149,6 @@ function openEditor(r) {
   ["#e-address", "#e-landmark"].forEach(s => $(s, form).addEventListener("input", preview));
   preview();
 
-  // จัดการรูป
   const paintImages = () => {
     $("#e-images").innerHTML = images.length ? images.map((im, i) => `
       <div class="img-item">
@@ -240,11 +226,9 @@ function openEditor(r) {
       verified_at: $("#e-verified").value || null,
       published: $("#e-pub").checked
     };
-    // ตรวจข้อมูล
     if (!row.name) return (msg.textContent = "กรุณาใส่ชื่อร้าน");
     if (!/^[a-z0-9-]+$/.test(row.id)) return (msg.textContent = "รหัสร้านใช้ได้เฉพาะ a-z, 0-9 และ - เท่านั้น");
     if (!row.address) return (msg.textContent = "กรุณาใส่ที่อยู่ (เลขที่ / ซอย / ถนน)");
-    // เบอร์โทร: จัดรูปแบบให้เป็นมาตรฐานเดียวกันอัตโนมัติ (มือถือ 2-4-4)
     if (row.phone) {
       const ph = formatPhone(row.phone);
       if (!ph) return (msg.textContent = "เบอร์โทรไม่ถูกต้อง มือถือต้องมี 10 หลัก เช่น 08-1234-5678 (เบอร์บ้าน 9 หลัก เช่น 02-549-4990)");
@@ -255,7 +239,6 @@ function openEditor(r) {
     if ((row.open_time && !row.close_time) || (!row.open_time && row.close_time)) return (msg.textContent = "ใส่เวลาเปิดและเวลาปิดให้ครบทั้งคู่");
     if (row.price_min && row.price_max && row.price_min > row.price_max) return (msg.textContent = "ราคาต่ำสุดต้องไม่มากกว่าราคาสูงสุด");
     if (row.images.length && !row.image_credit) return (msg.textContent = "กรุณาระบุที่มาภาพ (เครดิต)");
-    // เผยแพร่ได้เฉพาะร้านที่ข้อมูลพร้อมจริง
     if (row.published) {
       const missing = missingForPublish(row);
       if (missing.length) return (msg.textContent = `ยังเผยแพร่ไม่ได้ ข้อมูลยังขาด: ${missing.join(", ")} (กรอกให้ครบ หรือเอาติ๊ก "เผยแพร่" ออกเพื่อบันทึกแบบซ่อนไว้ก่อน)`);
@@ -300,7 +283,6 @@ function confirmDelete(r) {
   });
 }
 
-// ---------- ข้อความจากผู้ใช้ ----------
 function renderSuggestions() {
   const fresh = SUGGESTIONS.filter(s => s.status === "new").length;
   $("#count-new").textContent = fresh ? fresh : "";
@@ -327,7 +309,6 @@ function renderSuggestions() {
   }).join("") : `<div class="empty">ยังไม่มีข้อความจากผู้ใช้</div>`;
 }
 
-// ---------- โหลดข้อมูล ----------
 async function loadRestaurants() {
   RESTAURANTS = await DB.admin.listRestaurants();
   renderRows();
@@ -338,7 +319,6 @@ async function loadSuggestions() {
   renderSuggestions();
 }
 
-// ---------- เริ่มทำงาน ----------
 (async () => {
   if (!DB.configured) { location.replace("login.html"); return; }
   const session = await DB.admin.session();
@@ -347,13 +327,12 @@ async function loadSuggestions() {
 
   try {
     LOOK = await DB.admin.lookups();
-    LOOKUP = LOOK;            // ให้ฟังก์ชันใน ui.js ใช้ชื่อหมวดได้
+    LOOKUP = LOOK;
     await Promise.all([loadRestaurants(), loadSuggestions()]);
   } catch (err) {
     $(".admin-main").insertAdjacentHTML("afterbegin", `<p class="error-box">${esc(err.message)}</p>`);
   }
 
-  // แท็บ
   $(".admin-tabs").addEventListener("click", e => {
     const t = e.target.closest("[data-tab]");
     if (!t) return;

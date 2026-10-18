@@ -1,12 +1,6 @@
-/* ===================================================
-   home.css : หน้าแรก (index.html)
-   =================================================== */
-
-/* hero ไล่สีส้ม → เหลือง */
 .hero-home {
   background: linear-gradient(90deg, #F2955B 0%, #F6B862 50%, #F9D66C 100%);
-  height: clamp(280px, 20vw, 360px);   /* สูงกว่าหน้าอื่นนิดหน่อย เพราะมีช่องค้นหา */
-}
+  height: clamp(280px, 20vw, 360px);   }
 
 .hero-home .hero-text { flex: none; }
 
@@ -17,7 +11,6 @@
 
 .hero-status a { text-decoration: underline; }
 
-/* รูปตกแต่ง: ขนาดตามความสูงของ hero */
 .hero-images {
   flex: 1;
   min-width: 0;
@@ -34,7 +27,6 @@
 .img-steak { height: 88%; }
 .img-pasta { height: 100%; align-self: flex-start; max-width: none; object-position: right top; }
 
-/* ===== ประเภทอาหาร ===== */
 .category-list {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -67,7 +59,6 @@
 
 .category-card:hover img { transform: rotate(-6deg) scale(1.08); }
 
-/* ===== แถบ "กินอะไรดี?" ===== */
 .pick-band {
   position: relative;
   display: grid;
@@ -103,10 +94,6 @@
 .pick-band-photos img:nth-child(2) { left: 27%; top: 0; transform: rotate(3deg); z-index: 1; }
 .pick-band-photos img:nth-child(3) { right: 0; top: 26px; transform: rotate(9deg); }
 
-
-/* ===================================================
-   Responsive
-   =================================================== */
 @media (max-width: 1000px) {
   .category-card { font-size: 15px; }
   .category-card img { height: 46px; }
@@ -146,7 +133,6 @@
 
 }
 
-/* การ์ดประเภทอาหาร: สีพื้นตามหมวด */
 .category-card { --tint: var(--cream); background: linear-gradient(180deg, var(--tint) 0%, white 70%); }
 .category-card[data-cat="rice"]    { --tint: #FBE3D2; }
 .category-card[data-cat="noodle"]  { --tint: #FCEFC7; }

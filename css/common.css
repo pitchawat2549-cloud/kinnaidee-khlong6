@@ -1,35 +1,20 @@
-/* ===================================================
-   common.css : ใช้ทุกหน้า
-   สี / ฟอนต์ / ปุ่ม / เมนูด้านบน / การ์ดร้าน / ป้ายเปิด-ปิด
-   หน้าต่าง (modal) / ดูรูปเต็มจอ / สุ่มร้าน / ท้ายเว็บ
-   =================================================== */
-
-/* ===== สีทั้งเว็บ (แก้ที่นี่ที่เดียว) ===== */
 :root {
-  --orange: #D96A33;        /* ปุ่ม ลิงก์ เมนูที่เลือก */
-  --orange-dark: #B9541F;
+  --orange: #D96A33;          --orange-dark: #B9541F;
   --yellow: #F9D66C;
-  --cream: #F6EEE3;         /* พื้นการ์ด / hero */
-  --bg: #FDFBF6;            /* พื้นทั้งหน้า */
-  --border: #EFE3D3;
+  --cream: #F6EEE3;           --bg: #FDFBF6;              --border: #EFE3D3;
   --text: #3B2A22;
   --muted: #7A6455;
   --tag: #A88B78;
-  --green: #3F7A4A;         /* เปิดอยู่ */
-  --green-bg: #E4F1E3;
-  --red: #A6402A;           /* ปิดแล้ว */
-  --red-bg: #F8E3DC;
+  --green: #3F7A4A;           --green-bg: #E4F1E3;
+  --red: #A6402A;             --red-bg: #F8E3DC;
   --shadow: 0 2px 10px rgba(59, 42, 34, 0.08);
   --shadow-lg: 0 10px 28px rgba(59, 42, 34, 0.16);
   --radius: 16px;
-  /* ลายคลื่น (ลายเดียวกับในสไลด์) ใช้เป็นพื้นหลังจางๆ */
-  --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28' viewBox='0 0 56 28'%3E%3Cg fill='none' stroke='%23E6D3BD' stroke-width='1.4'%3E%3Cpath d='M0 28a28 28 0 0 1 56 0M7 28a21 21 0 0 1 42 0M14 28a14 14 0 0 1 28 0M21 28a7 7 0 0 1 14 0'/%3E%3Cpath d='M-28 14a28 28 0 0 1 56 0M-21 14a21 21 0 0 1 42 0M-14 14a14 14 0 0 1 28 0M28 14a28 28 0 0 1 56 0M35 14a21 21 0 0 1 42 0M42 14a14 14 0 0 1 28 0'/%3E%3C/g%3E%3C/svg%3E");
+    --wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='28' viewBox='0 0 56 28'%3E%3Cg fill='none' stroke='%23E6D3BD' stroke-width='1.4'%3E%3Cpath d='M0 28a28 28 0 0 1 56 0M7 28a21 21 0 0 1 42 0M14 28a14 14 0 0 1 28 0M21 28a7 7 0 0 1 14 0'/%3E%3Cpath d='M-28 14a28 28 0 0 1 56 0M-21 14a21 21 0 0 1 42 0M-14 14a14 14 0 0 1 28 0M28 14a28 28 0 0 1 56 0M35 14a21 21 0 0 1 42 0M42 14a14 14 0 0 1 28 0'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* ===== ทั้งหน้า ===== */
 * { box-sizing: border-box; }
 
-/* ซ่อนจริงเสมอ แม้ class อื่นจะตั้ง display ไว้ (เช่น .btn) */
 [hidden] { display: none !important; }
 
 html { scroll-behavior: smooth; }
@@ -111,7 +96,6 @@ button { font: inherit; color: inherit; }
   color: var(--red);
 }
 
-/* ===== ปุ่ม ===== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -149,7 +133,6 @@ button { font: inherit; color: inherit; }
   text-align: left;
 }
 
-/* ===== เมนูด้านบน ===== */
 #site-header {
   position: sticky;
   top: 0;
@@ -196,7 +179,6 @@ button { font: inherit; color: inherit; }
 
 .btn-pick { margin-bottom: 6px; }
 
-/* ===== Hero (ส่วนหัวของแต่ละหน้า) ===== */
 .hero {
   position: relative;
   display: flex;
@@ -206,16 +188,6 @@ button { font: inherit; color: inherit; }
   overflow: hidden;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-}
-
-/* ลายคลื่นจางๆ ทับพื้น hero */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--wave);
-  opacity: 0.35;
-  pointer-events: none;
 }
 
 .hero-text {
@@ -244,7 +216,6 @@ button { font: inherit; color: inherit; }
   margin: 4px 0 14px;
 }
 
-/* ===== ช่องค้นหา ===== */
 .search-bar {
   display: flex;
   align-items: center;
@@ -271,7 +242,6 @@ button { font: inherit; color: inherit; }
 
 .search-bar button { flex: none; }
 
-/* ===== การ์ดร้าน ===== */
 .restaurant-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -295,7 +265,6 @@ button { font: inherit; color: inherit; }
   box-shadow: var(--shadow-lg);
 }
 
-/* ลิงก์คลุมทั้งการ์ด (ปุ่มถูกใจอยู่ด้านบนลิงก์) */
 .r-card-link {
   position: absolute;
   inset: 0;
@@ -385,7 +354,6 @@ button { font: inherit; color: inherit; }
   border-radius: 20px;
 }
 
-/* ป้ายเปิด-ปิดบนรูป */
 .badge,
 .badge-inline {
   display: inline-block;
@@ -423,7 +391,6 @@ button { font: inherit; color: inherit; }
   50% { opacity: 0.3; }
 }
 
-/* ปุ่มถูกใจ */
 .fav-btn {
   position: absolute;
   right: 10px;
@@ -461,7 +428,6 @@ button { font: inherit; color: inherit; }
   border-radius: var(--radius);
 }
 
-/* การ์ดค่อยๆ ลอยขึ้นตอนแสดงผล (เล่นจบเองใน 0.4 วินาที) */
 .r-card { animation: rise 0.4s ease-out both; }
 .r-card:nth-child(2) { animation-delay: 0.05s; }
 .r-card:nth-child(3) { animation-delay: 0.1s; }
@@ -471,7 +437,6 @@ button { font: inherit; color: inherit; }
   from { opacity: 0; transform: translateY(14px); }
 }
 
-/* ===== ช่องกรอกข้อมูล ===== */
 .field {
   display: grid;
   gap: 4px;
@@ -509,7 +474,6 @@ button { font: inherit; color: inherit; }
 
 .form-msg { color: var(--red); min-height: 1em; margin: 0; }
 
-/* ===== หน้าต่าง (modal) ===== */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -554,7 +518,6 @@ button { font: inherit; color: inherit; }
 
 .suggest-form { display: grid; gap: 14px; }
 
-/* ===== สุ่มร้าน "กินอะไรดี?" ===== */
 .modal-picker { max-width: 520px; background-image: var(--wave); background-color: var(--bg); }
 
 .picker h2 { font-size: 34px; color: var(--orange); }
@@ -609,7 +572,6 @@ button { font: inherit; color: inherit; }
 
 .picker-actions { margin-top: 16px; text-align: center; }
 
-/* ===== ดูรูปเต็มจอ ===== */
 #lightbox {
   position: fixed;
   inset: 0;
@@ -634,8 +596,7 @@ button { font: inherit; color: inherit; }
 }
 
 #lightbox img {
-  height: calc(100vh - 140px);   /* ขยายรูปให้เต็มความสูงจอ แม้รูปต้นฉบับจะเล็ก */
-  width: auto;
+  height: calc(100vh - 140px);     width: auto;
   max-width: 100%;
   object-fit: contain;
   border-radius: 8px;
@@ -675,7 +636,6 @@ button { font: inherit; color: inherit; }
 .lb-next { right: 12px; }
 .lb-close:hover, .lb-nav:hover { background: rgba(255, 255, 255, 0.28); }
 
-/* ===== แจ้งเตือนสั้นๆ ===== */
 #toast {
   position: fixed;
   left: 50%;
@@ -694,12 +654,9 @@ button { font: inherit; color: inherit; }
 
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* ===== ท้ายเว็บ ===== */
 #site-footer {
   margin-top: 50px;
   background-color: #3B2A22;
-  background-image: var(--wave);
-  background-blend-mode: soft-light;
   color: #E9DDD0;
 }
 
@@ -751,10 +708,6 @@ button { font: inherit; color: inherit; }
   color: #CDBFB1;
 }
 
-/* ===================================================
-   Responsive
-   แท็บเล็ต ≤ 1000px / มือถือ ≤ 640px / มือถือเล็ก ≤ 380px
-   =================================================== */
 @media (max-width: 1000px) {
   .menu { gap: 22px; }
   .restaurant-list { grid-template-columns: repeat(3, 1fr); }
@@ -821,43 +774,6 @@ button { font: inherit; color: inherit; }
   html { scroll-behavior: auto; }
 }
 
-/* ===================================================
-   เพิ่ม 13 ต.ค. : ลวดลาย / รูปการ์ด / ร้านใกล้ฉัน / นับเวลาปิด
-   =================================================== */
-
-/* เส้นหยักใต้หัวข้อ */
-.section h2::after,
-.panel h2::after {
-  content: "";
-  display: block;
-  width: 58px;
-  height: 8px;
-  margin-top: 6px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='58' height='8' viewBox='0 0 58 8'%3E%3Cpath d='M1 4q3.5-4 7 0t7 0 7 0 7 0 7 0 7 0 7 0 7 0' fill='none' stroke='%23D96A33' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat;
-}
-.center h2::after { margin-left: auto; margin-right: auto; }
-.pick-band h2::after { display: none; }
-
-/* แถบพื้นครีมลายคลื่น เต็มความกว้างจอ */
-.band {
-  position: relative;
-  isolation: isolate;
-  margin-top: 36px;
-  padding-bottom: 40px;
-}
-.band::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc(50% - 50vw);
-  width: 100vw;
-  z-index: -1;
-  background-color: var(--cream);
-  background-image: var(--wave);
-}
-
-/* รูปบนการ์ด: เห็นทั้งรูป ไม่ตัดขอบ + พื้นหลังเป็นรูปเดียวกันแบบเบลอ */
 .r-card-blur {
   position: absolute;
   inset: -16px;
@@ -871,14 +787,12 @@ button { font: inherit; color: inherit; }
   object-position: center;
 }
 
-/* ที่อยู่บนการ์ด: บรรทัดสองเป็นตำบล อำเภอ */
 .r-card-area {
   display: block;
   font-size: 12px;
   color: var(--muted);
 }
 
-/* ระยะทางจากผู้ใช้ */
 .dist-chip {
   position: absolute;
   left: 10px;
@@ -894,7 +808,6 @@ button { font: inherit; color: inherit; }
 }
 .badge-dist { background: #E6EEF8; color: #2E5A88; }
 
-/* ใกล้ปิด (เหลือไม่เกิน 1 ชม.) */
 .badge-soon { background: #FFF0D2; color: #94560A; }
 .badge-soon::before {
   content: "";
@@ -908,7 +821,6 @@ button { font: inherit; color: inherit; }
   animation: pulse 1s infinite;
 }
 
-/* ปุ่ม "ร้านใกล้ฉัน" ในหน้าแรก */
 .near-link {
   display: inline-flex;
   align-items: center;
@@ -925,7 +837,6 @@ button { font: inherit; color: inherit; }
 .near-link img { width: 12px; }
 .near-link:hover { background: white; }
 
-/* ที่อยู่หน้ารายละเอียดร้าน (แยกบรรทัด) */
 .addr-main,
 .addr-landmark,
 .addr-area { display: block; }
@@ -936,5 +847,4 @@ button { font: inherit; color: inherit; }
   .near-link { margin: 4px 0 0; }
 }
 @media (max-width: 360px) {
-  #home-q, #search-input { font-size: 14px; }   /* จอเล็กมาก ให้ข้อความตัวอย่างไม่ขาด */
-}
+  #home-q, #search-input { font-size: 14px; }   }

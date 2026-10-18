@@ -1,6 +1,3 @@
-// ===================================================
-// detail.js : หน้ารายละเอียดร้าน (restaurant/detail.html?id=...)
-// ===================================================
 App.start(data => {
   const r = data.restaurants.find(x => x.id === getParam("id"));
   if (!r) {
@@ -29,19 +26,16 @@ App.start(data => {
   $("#detail-address").innerHTML = addressHtml(r);
   $("#detail-area").textContent = area ? `${area.name} (${area.soi})` : "ไม่ระบุ";
   $("#detail-phone").innerHTML = r.phone ? `<a href="tel:${esc(r.phone.replace(/[^0-9+]/g, ""))}">${esc(formatPhone(r.phone) || r.phone)}</a>` : "ไม่ระบุ";
-  // ซ่อนแถวที่ยังไม่มีข้อมูล
   $("#row-price").hidden = !hasPrice(r);
   $("#row-hours").hidden = !r.open_time;
   $("#row-area").hidden = !area;
   $("#row-phone").hidden = !r.phone;
-  // ทีมงานยืนยันข้อมูลกับร้านแล้ว
   if (r.verified_at) {
     $("#detail-verified").hidden = false;
     $("#detail-verified").textContent = `✓ ทีมงานยืนยันข้อมูลกับร้านแล้ว เมื่อ ${thaiDate(r.verified_at)}`;
   }
   $("#detail-tags").innerHTML = r.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("");
 
-  // ---------- รูป ----------
   const imgs = r.images;
   const credit = r.image_credit || "";
   let current = 0;
@@ -74,7 +68,6 @@ App.start(data => {
   }
   $("#detail-credit").textContent = credit ? `ที่มาภาพ: ${credit}` : "";
 
-  // ---------- ปุ่ม ----------
   const mapsUrl = r.map_url || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.name + " " + addressText(r))}`;
   $("#detail-route").href = mapsUrl;
   $("#detail-route2").href = mapsUrl;
@@ -104,8 +97,6 @@ App.start(data => {
   });
   $("#detail-report").addEventListener("click", () => openSuggestForm({ kind: "fix", restaurant: r }));
 
-  // ---------- เมนู ----------
-  // เมนู (ไม่มีข้อมูล = ซ่อนทั้งกล่อง)
   $("#menu-panel").hidden = !r.menu.length;
   $("#detail-menu").innerHTML = r.menu.map(g => `
     <div class="menu-group">
@@ -113,13 +104,10 @@ App.start(data => {
       ${g.items.map(i => `<div class="menu-row"><span>${esc(i[0])}</span><span class="price">${esc(i[1])}</span></div>`).join("")}
     </div>`).join("");
 
-  // ---------- แผนที่ ----------
   $("#map-address").textContent = addressText(r);
-  // มีพิกัด = ปักหมุดตรงจุด, ไม่มี = ค้นหาจากชื่อ + ที่อยู่
   const mapQuery = r.lat != null && r.lng != null ? `${r.lat},${r.lng}` : `${r.name} ${addressText(r)}`;
   $("#detail-map").src = `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=17&output=embed`;
 
-  // ---------- ร้านอื่นในหมวดเดียวกัน ----------
   const related = shuffle(data.restaurants.filter(x => x.category_id === r.category_id && x.id !== r.id)).slice(0, 4);
   if (related.length) {
     $("#related-section").hidden = false;

@@ -1,8 +1,4 @@
-// ===================================================
-// about.js : หน้าเกี่ยวกับเรา
-// ===================================================
 App.start(data => {
-  // พื้นที่ + จำนวนร้านในแต่ละโซน
   $("#area-list").innerHTML = data.areas.map(a => {
     const n = data.restaurants.filter(r => r.area_id === a.id).length;
     return `

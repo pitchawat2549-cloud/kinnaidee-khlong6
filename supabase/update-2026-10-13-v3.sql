@@ -1,6 +1,3 @@
--- อัปเดตรวม (13 ต.ค. รอบ 3): โซน + ที่อยู่ + พิกัด + เวลาเปิด-ปิด + วันหยุด + เบอร์โทร + ราคาเท่าที่หาได้
--- + ราคาและเมนูแนะนำ 11 ร้าน (จากข้อมูลที่ทีมค้นมา) | รันใน Supabase > SQL Editor ได้เลย รันซ้ำได้ (รวมของรอบ 2 ไว้แล้ว)
-
 alter table restaurants add column if not exists lat double precision;
 alter table restaurants add column if not exists lng double precision;
 alter table restaurants add column if not exists closed_days int[] not null default '{}';

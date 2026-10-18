@@ -1,5 +1,3 @@
--- ข้อมูลเริ่มต้น (รันหลัง schema.sql)
-
 insert into categories (id,name,icon,sort) values ('rice','อาหารจานเดียว','images/icons/rice.svg',0) on conflict (id) do update set name=excluded.name, icon=excluded.icon, sort=excluded.sort;
 insert into categories (id,name,icon,sort) values ('noodle','เมนูเส้น','images/icons/noodle.svg',1) on conflict (id) do update set name=excluded.name, icon=excluded.icon, sort=excluded.sort;
 insert into categories (id,name,icon,sort) values ('dessert','ของกินเล่น & ขนม','images/icons/snack.svg',2) on conflict (id) do update set name=excluded.name, icon=excluded.icon, sort=excluded.sort;

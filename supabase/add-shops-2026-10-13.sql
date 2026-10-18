@@ -1,5 +1,3 @@
--- เพิ่มร้านใหม่ 8 ร้าน (13 ต.ค.) : รันใน Supabase > SQL Editor ได้เลย รันซ้ำได้ ไม่ทับข้อมูลที่แก้ไว้แล้ว
-
 update categories set name = 'ของกินเล่น & ขนม' where id = 'dessert';
 update restaurants set category_id = 'rice' where id = 'kaitod-baimai';
 
