@@ -65,7 +65,7 @@ function formatPhone(raw) {
 function thaiDate(d) {
   if (!d) return "";
   const t = new Date(`${String(d).slice(0, 10)}T00:00:00`);
-  return isNaN(t) ? "" : t.toLocaleDateString("th-TH", { day: "numeric", month: "short", year: "numeric" });
+  return isNaN(t) ? "" : t.toLocaleDateString("th-TH-u-ca-gregory", { day: "numeric", month: "short", year: "numeric" });
 }
 
 const Geo = {
@@ -492,7 +492,7 @@ function renderChrome() {
           <a href="${ROOT}admin/login.html">สำหรับผู้ดูแลระบบ</a>
         </div>
       </div>
-      <p class="copyright">© ${new Date().getFullYear() + 543} กินไหนดีคลองหก</p>`;
+      <p class="copyright">© ${new Date().getFullYear()} กินไหนดีคลองหก</p>`;
   }
 }
 
