@@ -42,6 +42,17 @@ function addressHtml(r) {
   ].filter(Boolean).join("");
 }
 
+function normalizeName(raw) {
+  return String(raw || "")
+    .replace(/[๐-๙]/g, d => String("๐๑๒๓๔๕๖๗๘๙".indexOf(d)))
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/([\u0E00-\u0E7F])(\d)/g, "$1 $2")
+    .replace(/[A-Za-z]+/g, w => (w === w.toUpperCase() || w === w.toLowerCase()) && w.length > 1
+      ? w[0].toUpperCase() + w.slice(1).toLowerCase()
+      : w);
+}
+
 function formatPhone(raw) {
   let d = String(raw || "").replace(/\D/g, "");
   if (d.startsWith("66")) d = "0" + d.slice(2);

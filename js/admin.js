@@ -226,6 +226,8 @@ function openEditor(r) {
       verified_at: $("#e-verified").value || null,
       published: $("#e-pub").checked
     };
+    row.name = normalizeName(row.name);
+    $("#e-name").value = row.name;
     if (!row.name) return (msg.textContent = "กรุณาใส่ชื่อร้าน");
     if (!/^[a-z0-9-]+$/.test(row.id)) return (msg.textContent = "รหัสร้านใช้ได้เฉพาะ a-z, 0-9 และ - เท่านั้น");
     if (!row.address) return (msg.textContent = "กรุณาใส่ที่อยู่ (เลขที่ / ซอย / ถนน)");

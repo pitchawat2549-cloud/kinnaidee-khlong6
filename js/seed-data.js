@@ -198,7 +198,7 @@ window.SEED = {
     },
     {
       "id": "kaitod-baimai",
-      "name": "ไก่ทอดใบไม้ สูตรปักษ์ใต้ คลอง6",
+      "name": "ไก่ทอดใบไม้ สูตรปักษ์ใต้ คลอง 6",
       "category_id": "rice",
       "area_id": "phonthisan",
       "address": "ถนนพรธิสาร 3",
@@ -638,7 +638,7 @@ window.SEED = {
     {
       "id": "chuang-chuang-wei-mala",
       "name": "ชวง ชวง เว่ย หม่าล่าเสฉวน",
-      "category_id": "dessert",
+      "category_id": "noodle",
       "area_id": "canal-south",
       "address": "ชั้น 1 หอพักไพลินเพลส ซอยอีสเทิร์น (ซอยบัญชาปราณี)",
       "landmark": "ห่างร้านก๋วยเตี๋ยวเรืออยุธยาประมาณ 60 ม.",
@@ -702,7 +702,7 @@ window.SEED = {
       "category_id": "dessert",
       "area_id": "canal-lagoon",
       "address": "29/4 ถนนเลียบคลองหก",
-      "landmark": "อาคารเดียวกับร้านก๋วยเตี๋ยวเรือรสเด็ด ๗๙",
+      "landmark": "อาคารเดียวกับร้านก๋วยเตี๋ยวเรือรสเด็ด 79",
       "open_time": "17:00",
       "close_time": "01:00",
       "price_min": 5,
@@ -797,7 +797,7 @@ window.SEED = {
     },
     {
       "id": "boat-noodle-rosdet79",
-      "name": "ก๋วยเตี๋ยวเรือรสเด็ด ๗๙",
+      "name": "ก๋วยเตี๋ยวเรือรสเด็ด 79",
       "category_id": "noodle",
       "area_id": "canal-lagoon",
       "address": "29/4 ถนนเลียบคลองหก",
@@ -912,7 +912,7 @@ window.SEED = {
     },
     {
       "id": "olive-cafe",
-      "name": "OLIVE CAFE",
+      "name": "Olive Cafe",
       "category_id": "drink",
       "area_id": "pink-bridge",
       "address": "ถนนเลียบคลองหก",
@@ -1071,7 +1071,7 @@ window.SEED = {
     },
     {
       "id": "sweet-home-coffee",
-      "name": "Sweet home coffee",
+      "name": "Sweet Home Coffee",
       "category_id": "drink",
       "area_id": "canal-lagoon",
       "address": "29/1 ถนนเลียบคลองหก",
